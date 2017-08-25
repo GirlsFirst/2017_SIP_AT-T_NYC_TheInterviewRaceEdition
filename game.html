@@ -1,0 +1,6379 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>The Interview</title>
+  <link href="https://fonts.googleapis.com/css?family=Comfortaa|Open+Sans" rel="stylesheet">
+  <style>
+    body {
+      font-family: "Open Sans";
+      margin: 50px auto;
+      max-width: 500px;
+      background-color: #5FA8D3;
+      color: #1B4965;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      font-family: "Comfortaa";
+      color: #62D6CB;
+      font-weight: bold;
+    }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>The Interview</h1>
+
+  <p>Project by Joanna Walch, Maria Altamirano, Massiel Sanchez and Melissa Jimenez</p>
+
+  <em><p>Girls Who Code Summer Immersion Program at AT&T, NYC, 2017</p></em>
+
+  <h2>Play the Game</h2>
+
+<script src="processing.js"></script>
+<script type="text/processing" data-processing-target="mycanvas">
+void setup()
+{
+  size(400,500);
+  background(125);
+  fill(255);
+  noLoop();
+  PFont fontA = loadFont("Arial");
+  textFont(fontA, 14);
+
+  var currentScene;
+  var sunRadius = 65;
+  var sceneSize = 158;
+
+  var Button = function(x, y, w, h, l, sN) {
+      // Button object type
+      this.x = x;
+      this.y = y;
+      this.width = w;
+      this.height = h;
+      this.label = l;
+      this.sceneNumber = sN;
+      this.onClick = function() {};
+  };
+
+  Button.prototype.draw = function() {
+      fill(107, 159, 175);
+      rect(this.x, this.y, this.width, this.height, 5);
+      fill(0, 0, 0);
+      textSize(19);
+      textAlign(LEFT, TOP);
+      text(this.label, this.x+10, this.y+this.height/6);
+  };
+
+  Button.prototype.isMouseInside = function() {
+      return mouseX > this.x-this.width/2 &&
+             mouseX < (this.x + this.width/2) &&
+             mouseY > this.y - this.height/2 &&
+             mouseY < (this.y + this.height/2);
+  };
+
+  Button.prototype.handleMouseClick = function() {
+      if (this.isMouseInside()) {
+          this.onClick();
+      }
+  };
+
+  var butn1 = new Button(43, 305, 117, 49, "     Start", 1);// creates first new button
+    butn1.onClick = function() {
+      drawScene3();
+    };
+
+  var butn2 = new Button(265, 305, 117, 49, "How to Play", 1); // creates second new button
+    butn2.onClick = function() {
+      drawScene2();
+    };
+
+  var butn3 = new Button(326, 5, 70, 30, " Skip", 4);
+    butn3.onClick = function() {
+      drawScene5();
+    };
+
+  var butn4 = new Button(105, 299, 178, 48, "Press Here to Start", 2);
+    butn4.onClick = function() {
+      drawScene3();
+    };
+
+  var butn5 = new Button(350, 150, 36, 30, ">", 3); // draw Selena
+    butn5.onClick = function() {
+      if (currentScene === 3) {
+        drawScene31();
+      }
+    };
+
+  var butn51 = new Button(350, 150, 36, 30, ">", 3.1); // draw Linda
+    butn51.onClick = function() {
+      if (currentScene === 3.1) {
+        drawScene32();
+      }
+    };
+
+  var butn52 = new Button(350, 150, 36, 30, ">", 3.2); // draw Zara
+    butn52.onClick = function() {
+      if (currentScene === 3.2) {
+        drawScene33();
+      }
+    };
+
+  var butn53 = new Button(350, 150, 36, 30, ">", 3.3); // draw Carlos
+    butn53.onClick = function() {
+      if (currentScene === 3.3) {
+        drawScene34();
+      }
+    };
+
+  var butn54 = new Button(350, 150, 36, 30, ">", 3.4); // draw Suzu
+    butn54.onClick = function() {
+      if (currentScene === 3.4) {
+        drawScene35();
+      }
+    };
+
+  var butn55 = new Button(350, 150, 36, 30, ">", 3.5); // draw Simon
+    butn55.onClick = function() {
+      if (currentScene === 3.5) {
+        drawScene36();
+      }
+    };
+
+  var butn56 = new Button(350, 150, 36, 30, ">", 3.6); // draw Jimin
+    butn56.onClick = function() {
+      if (currentScene === 3.6) {
+        drawScene37();
+      }
+    };
+
+  var butn6 = new Button(300, 319, 94, 30, "Continue", 3.8); // continue to travel scene
+    butn6.onClick = function() {
+      if (currentScene === 3.8) {
+        drawScene4();
+      }
+    };
+
+  var butn7 = new Button(306, 370, 94, 30, "Continue", 5); // continue to scene 6
+    butn7.onClick = function() {
+      if (currentScene === 5) {
+        drawScene61();
+      }
+    };
+
+  var butn8 = new Button(10, 150, 36, 30, "<", 3.1);
+    butn8.onClick = function() {
+      if (currentScene === 3.1) {
+        drawScene3();
+      }
+    }; // draw previous character (Selena)
+
+  var butn81 = new Button(10, 150, 36, 30, "<", 3.2);
+    butn81.onClick = function () {
+      if (currentScene === 3.2) {
+        drawScene31();
+      }
+    };
+
+  var butn82 = new Button(10, 150, 36, 30, "<", 3.3);
+    butn82.onClick = function () {
+      if (currentScene === 3.3) {
+        drawScene32();
+      }
+    };
+
+  var butn83 = new Button(10, 150, 36, 30, "<", 3.4);
+    butn83.onClick = function () {
+      if (currentScene === 3.4) {
+        drawScene33();
+      }
+    };
+
+  var butn84 = new Button(10, 150, 36, 30, "<", 3.5);
+    butn84.onClick = function () {
+      if (currentScene === 3.5) {
+        drawScene34();
+      }
+    };
+
+  var butn85 = new Button(10, 150, 36, 30, "<", 3.6);
+    butn85.onClick = function () {
+      if (currentScene === 3.6) {
+        drawScene35();
+      }
+    };
+
+  var butn86 = new Button(10, 150, 36, 30, "<", 3.7);
+    butn86.onClick = function () {
+      if (currentScene === 3.7) {
+        drawScene36();
+      }
+    };
+
+  var butn87 = new Button(10, 150, 36, 30, "<", 3.3);
+    butn87.onClick = function () {
+      if (currentScene === 3.3) {
+        drawScene32();
+      }
+    };
+
+  var butn9 = new Button(125, 112, 146, 213, "Selena Esteves", 3); // choose selena
+    butn9.onClick = function() {
+      drawScene38();
+    };
+
+  var butn10 = new Button(125, 70, 146, 213, "Gerard Fuller", 3.1); // choose gerard
+    butn10.onClick = function() {
+      drawScene381();
+    };
+
+  var butn11 = new Button(125, 112, 146, 213, "Linda Craig", 3.2); // choose linda
+    butn11.onClick = function() {
+      drawScene382();
+    };
+
+  var butn12 = new Button(125, 112, 146, 213, "Zara Jacobs", 3.3);
+    butn12.onClick = function() {
+      drawScene383();
+    };
+
+  var butn13 = new Button(125, 112, 146, 213, "Carlos Escarra", 3.4);
+    butn13.onClick = function() {
+      drawScene384();
+    };
+
+  var butn14 = new Button(125, 112, 146, 213, "Suzu Miyamoto", 3.5);
+    butn14.onClick = function() {
+      drawScene385();
+    };
+
+  var butn15 = new Button(125, 112, 146, 213, "Simon Carter", 3.6);
+    butn15.onClick = function() {
+      drawScene386();
+    };
+
+  var butn16 = new Button(125, 112, 146, 213, "Jimin Park", 3.7);
+    butn16.onClick = function() {
+      drawScene387();
+    };
+
+  var butn17 = new Button (105, 299, 178, 48, "Try Again", 7);
+    butn17.onClick = function() {
+      drawScene3();
+    };
+
+  var btn1 = new Button(118, 95, 150, 50);
+    btn1.onClick = function() {
+      drawScene67();
+    };
+
+  var btn2 = new Button(118, 161, 150, 50);
+    btn2.onClick = function() {
+      drawScene7();
+    };
+
+  var btn3 = new Button(118, 231, 150, 50);
+    btn3.onClick = function() {
+      drawScene67();
+    };
+
+  var btn4 = new Button(118, 95, 150, 50);
+    btn4.onClick = function() {
+      drawScene71();
+    };
+
+  var btn5 = new Button(118, 161, 150, 50);
+    btn5.onClick = function() {
+      drawScene7();
+    };
+
+  var btn6 = new Button(118, 231, 150, 50);
+    btn6.onClick = function() {
+      drawScene71();
+    };
+
+  var btn7 = new Button(118, 95, 150, 50);
+    btn7.onClick = function() {
+      drawScene75();
+    };
+
+  var btn8 = new Button(118, 161, 150, 50);
+    btn8.onClick = function() {
+      drawScene7();
+    };
+
+  var btn9 = new Button(118, 231, 150, 50);
+    btn9.onClick = function() {
+      drawScene75();
+    };
+
+  var btn10 = new Button(118, 95, 150, 50);
+    btn10.onClick = function() {
+      drawScene79();
+    };
+
+  var btn11 = new Button(118, 161, 150, 50);
+    btn11.onClick = function() {
+      drawScene7();
+    };
+
+  var btn12 = new Button(118, 231, 150, 50);
+    btn12.onClick = function() {
+      drawScene79();
+    };
+
+  var btn13 = new Button(300, 319, 94, 30, "Continue", 6);
+    btn13.onClick = function() {
+      drawScene61();
+    };
+
+  var btn14 = new Button(300, 319, 94, 30, "Continue", 6.1);
+    btn14.onClick = function() {
+      drawScene62();
+    };
+
+  var btn15 = new Button(300, 319, 94, 30, "Continue", 6.2);
+    btn15.onClick = function() {
+      drawScene63();
+    };
+
+  var btn16 = new Button(300, 319, 94, 30, "Continue", 6.3);
+    btn16.onClick = function() {
+      drawScene64();
+    };
+
+  var btn17 = new Button(300, 319, 94, 30, "Continue", 6.4);
+    btn17.onClick = function() {
+      drawScene65();
+    };
+
+  var btn18 = new Button(300, 319, 94, 30, "Continue", 6.5);
+    btn18.onClick = function() {
+      drawScene66();
+    };
+
+  var btn19 = new Button(300, 319, 94, 30, "Continue", 6.7);
+    btn19.onClick = function() {
+      drawScene68();
+    };
+
+  var btn20 = new Button(300, 319, 94, 30, "Continue", 6.8);
+    btn20.onClick = function() {
+      drawScene69();
+    };
+
+  var btn21 = new Button(300, 319, 94, 30, "Continue", 6.9);
+    btn21.onClick = function() {
+      drawScene70();
+    };
+
+  var btn22 = new Button(300, 319, 94, 30, "Continue", 7.1);
+    btn22.onClick = function() {
+      drawScene72();
+    };
+
+  var btn23 = new Button(300, 319, 94, 30, "Continue", 7.2);
+    btn23.onClick = function() {
+      drawScene73();
+    };
+
+  var btn24 = new Button(300, 319, 94, 30, "Continue", 7.3);
+    btn24.onClick = function() {
+      drawScene74();
+    };
+
+  var btn25 = new Button(300, 319, 94, 30, "Continue", 7.5);
+    btn25.onClick = function() {
+      drawScene76();
+    };
+
+  var btn26 = new Button(300, 319, 94, 30, "Continue", 7.6);
+    btn26.onClick = function() {
+      drawScene77();
+    };
+
+  var btn27 = new Button(300, 319, 94, 30, "Continue", 7.7);
+    btn27.onClick = function() {
+      drawScene78();
+    };
+
+  var btn28 = new Button(300, 319, 94, 30, "Continue", 7.9);
+    btn28.onClick = function() {
+      drawScene80();
+    };
+
+  var btn29 = new Button(300, 319, 94, 30, "Continue", 80);
+    btn29.onClick = function() {
+      drawScene8();
+    };
+
+  var buttons = [btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8,
+                btn9, btn10, btn11, btn12, btn13, btn14, btn15, btn16,
+                btn17, btn18, btn19, btn20, btn21, btn22, btn23, btn24,
+                btn25, btn26, btn27, btn28, btn29, butn1, butn2, butn3,
+                butn4, butn5, butn51, butn52, butn53, butn54, butn55,
+                butn56, butn6, butn7, butn8, butn81, butn82, butn83,
+                butn84, butn85, butn86, butn87, butn9, butn10, butn11,
+                butn12, butn13, butn14, butn15, butn16, butn17];
+
+  // functions for scenes
+  var drawScene1 = function() {
+    // Scene 1: Title screen
+    background(218, 235, 232);
+    fill(0, 0, 0);
+    textSize(29);
+    textAlign(TOP, RIGHT);
+    text("The Interview: Race Edition", 10, height/3); // title of title screen
+    currentScene = 1;
+
+    butn1.draw();
+    butn2.draw();
+
+  }; // Scene 1 function
+  drawScene1(); // draws title page
+
+  var drawScene2 = function() {
+      // Scene 2: How to Play
+      currentScene = 2;
+      //explanation background
+      fill(227, 227, 227);
+      rect(0, 0, 398, 398);
+
+      //background decoration
+      fill(255, 0, 0);
+      ellipse(41, 30, 20, 20);
+
+      fill(97, 171, 119);
+      rect(23, 14, 59, 29);
+
+      fill(97, 171, 119);
+      rect(168, 14, 59, 29);
+
+      fill(97, 171, 119);
+      rect(315, 14, 59, 29);
+
+      fill(97, 171, 119);
+      rect(23, 353, 59, 29);
+
+      fill(97, 171, 119);
+      rect(168, 353, 59, 29);
+
+      //
+      fill(97, 171, 119);
+      rect(315, 353, 59, 29);
+
+      //explanation
+      fill(245, 245, 245);
+      rect(42, 85, 311, 208);
+
+      textSize(18);
+      fill(0, 0, 0);
+      text("The Interview:", 60, 109);
+
+      textSize(12);
+      fill(0, 0, 0);
+      text("You will make choices that will determine the ending", 58, 127);
+
+      textSize(12);
+      fill(0, 0, 0);
+      text("of your interview. This means, you will either get the", 58, 139);
+
+      textSize(12);
+      fill(0, 0, 0);
+      text("job or, not get it.", 58, 151);
+
+      textSize(18);
+      fill(0, 0, 0);
+      text("Controls:", 58, 188);
+
+      textSize(12);
+      fill(0, 0, 0);
+      text("choose which options you think are the best", 58, 206);
+
+      butn4.draw();
+  }; // Scene 2 function // how to play // how to play
+
+  var drawScene3 = function() {
+      // Scene 3: Choose character
+      currentScene = 3;
+
+      background(235, 247, 255);
+      background(235, 247, 255);
+      fill(0, 0, 0);
+      textSize(29);
+      textAlign(TOP, LEFT);
+      text("Choose your character", 8, height/10);// title
+
+      butn9.draw();
+
+      // Cards
+      pushMatrix();
+      translate(83, 7);
+      textSize(19);
+      popMatrix();
+
+      // character on card
+      var drawSelena = function() {
+          pushMatrix();
+          noStroke();
+
+
+          translate(3, 49);
+          fill(224,172,105);//head
+          ellipse(193, 172, 60, 60);
+          fill(255, 255, 255);
+          ellipse(201, 165, 13, 13);//left eyeball
+          ellipse(184, 165, 13, 13);//right eyeball
+          fill(0, 0, 0);
+          ellipse(201, 165, 6, 6);//left pupil
+          ellipse(184, 165, 6, 6);//right pupil
+          fill(199, 14, 42);
+          arc(193, 182, 21, 10, 10, 165);//mouth
+          fill(97, 212, 155);
+          rect(154, 202, 11, 46);//left arm
+          rect(218, 202, 21, 46);//right arm
+          fill(97, 212, 155);
+          rect(165, 202, 60, 65);//torso
+          fill(224,172,105);
+          ellipse(160, 250, 13, 13);//left stub
+          ellipse(232, 250, 13, 13);//right stub
+          fill(230, 216, 216);
+          ellipse(194, 208, 8, 8);
+          ellipse(194, 220, 8, 8);
+          ellipse(194, 232, 8, 8);
+          ellipse(194, 244, 8, 8);
+          fill(0, 0, 0);
+          ellipse(218, 156, 15, 15);//hair
+          ellipse(168, 154, 15, 15);
+          ellipse(166, 164, 15, 15);
+          ellipse(163, 176, 15, 15);
+          ellipse(164, 185, 15, 15);
+          ellipse(223, 165, 15, 15);
+          ellipse(224, 175, 15, 15);
+          ellipse(224, 186, 15, 15);
+          ellipse(171, 149, 15, 15);
+          ellipse(213, 149, 15, 15);
+          ellipse(206, 144, 15, 15);
+          ellipse(198, 143, 15, 15);
+          ellipse(180, 146, 15, 15);
+          ellipse(204, 145, 15, 15);
+          ellipse(189, 144, 15, 15);
+      };
+      butn5.draw();
+      popMatrix();
+      drawSelena();
+  }; // Scene 3 function (character select Selena) // 3-37 card // selena // selena
+
+  var drawScene31 = function() {
+      background(217, 220, 255);
+      textSize(29);
+      textAlign(TOP, LEFT);
+      text("Choose your character", 8, height/20); // title of screen
+
+      currentScene = 3.1;
+
+      butn10.draw();
+      // card
+      pushMatrix();
+      translate(80, -40);
+      textSize(19);
+      popMatrix();
+
+      var drawGerard = function() {
+          pushMatrix();
+          noStroke();
+
+          translate(0, -70);
+          fill(255,219,172);
+          ellipse(200, 245, 50,50);//head
+          fill(189,199,255);
+          rect(175, 270, 50, 78);//torso
+          fill(255,219,172);
+          ellipse(170, 332, 10, 10);//left stub
+          ellipse(229, 332, 10, 10);//right stub
+          fill(255, 255, 255);
+          ellipse(190, 241, 10, 10);//left eyeball
+          ellipse(210, 241, 10, 10);//right eyeball
+          fill(0, 0, 0);
+          ellipse(190, 241, 3, 3);//left pupil
+          ellipse(210, 241, 3, 3);//right pupil
+          fill(199, 14, 42);
+          arc(201, 255, 21, 10, 10, 165);//mouth
+          fill(189,199,255);
+          rect(165, 270, 10, 57);//left arm
+          rect(224, 270, 10, 57);//right arm
+          fill(251,130,139);
+          triangle(202, 293, 215, 270, 184, 270);//tie
+          fill(226, 156, 69);
+          ellipse(194, 221, 10, 10);//hair
+          ellipse(186, 224, 10, 10);
+          ellipse(202, 221, 10, 10);
+          ellipse(211, 223, 10, 10);
+          ellipse(179, 230, 10, 10);
+          ellipse(219, 227, 10, 10);
+      };
+      drawGerard();
+      popMatrix();
+      butn51.draw();
+      butn8.draw();
+  }; // Scene 3 function (character select Gerard) // gerard
+
+  var drawScene32 = function() {
+      background(217, 220, 255);
+      textSize(29);
+      textAlign(TOP, LEFT);
+      text("Choose your character", 8, height/10); // title of screen
+
+      currentScene = 3.2;
+
+      butn11.draw();
+
+      pushMatrix();
+      translate(83, 7);
+      textSize(19);
+      popMatrix();
+
+
+      // character on card
+      var drawLinda = function() {
+          pushMatrix();
+          noStroke();
+
+          fill(224,172,105);//head
+          ellipse(193, 172, 60, 60);
+          fill(255, 255, 255);
+          ellipse(201, 165, 13, 13);//left eyeball
+          ellipse(184, 165, 13, 13);//right eyeball
+          fill(0, 0, 0);
+          ellipse(201, 165, 6, 6);//left pupil
+          ellipse(184, 165, 6, 6);//right pupil
+          fill(199, 14, 42);
+          arc(193, 182, 21, 10, 10, 165);//mouth
+          fill(97, 212, 155);
+          rect(154, 202, 11, 46);//left arm
+          rect(218, 202, 21, 46);//right arm
+          fill(97, 212, 155);
+          rect(165, 202, 60, 65);//torso
+          fill(224,172,105);
+          ellipse(160, 250, 13, 13);//left stub
+          ellipse(232, 250, 13, 13);//right stub
+          fill(230, 216, 216);
+          ellipse(194, 208, 8, 8);
+          ellipse(194, 220, 8, 8);
+          ellipse(194, 232, 8, 8);
+          ellipse(194, 244, 8, 8);
+          fill(0, 0, 0);
+          ellipse(218, 156, 15, 15);//hair
+          ellipse(168, 154, 15, 15);
+          ellipse(166, 164, 15, 15);
+          ellipse(163, 176, 15, 15);
+          ellipse(164, 185, 15, 15);
+          ellipse(223, 165, 15, 15);
+          ellipse(224, 175, 15, 15);
+          ellipse(224, 186, 15, 15);
+          ellipse(171, 149, 15, 15);
+          ellipse(213, 149, 15, 15);
+          ellipse(206, 144, 15, 15);
+          ellipse(198, 143, 15, 15);
+          ellipse(180, 146, 15, 15);
+          ellipse(204, 145, 15, 15);
+          ellipse(189, 144, 15, 15);
+      };
+      popMatrix();
+      drawLinda();
+      // character on card
+
+      butn52.draw();
+      butn8.draw();
+  }; // Scene 3 function (character select Linda) // linda // gerard
+
+  var drawScene33 = function() {
+      // Scene 3.3
+      currentScene = 3.3;
+      background(217, 220, 255);
+      textSize(29);
+      textAlign(TOP, LEFT);
+      text("Choose your character", 8, height/10); // title of screen
+
+      butn12.draw();
+
+      pushMatrix();
+      translate(83, 7);
+      textSize(19);
+      popMatrix();
+
+
+      // character on card
+      var drawZara = function() {
+          pushMatrix();
+          noStroke();
+
+          fill(141,85,36);//head
+          ellipse(193, 172, 60, 60);
+          fill(255, 255, 255);
+          ellipse(201, 165, 13, 13);//left eyeball
+          ellipse(184, 165, 13, 13);//right eyeball
+          fill(0, 0, 0);
+          ellipse(201, 165, 6, 6);//left pupil
+          ellipse(184, 165, 6, 6);//right pupil
+          fill(199, 14, 42);
+          arc(193, 182, 21, 10, 10, 165);//mouth
+          fill(6, 3, 63);
+          rect(154, 202, 11, 46);//left arm
+          rect(218, 202, 21, 46);//right arm
+          fill(6, 3, 63);
+          rect(165, 202, 60, 65);//torso
+          fill(141,85,36);
+          ellipse(160, 250, 13, 13);//left stub
+          ellipse(232, 250, 13, 13);//right stub
+          fill(230, 216, 216);
+          ellipse(194, 208, 8, 8);
+          ellipse(194, 220, 8, 8);
+          ellipse(194, 232, 8, 8);
+          ellipse(194, 244, 8, 8);
+          fill(0, 0, 0);
+          ellipse(218, 156, 15, 15);//hair
+          ellipse(168, 154, 15, 15);
+          ellipse(166, 164, 15, 15);
+          ellipse(163, 176, 15, 15);
+          ellipse(164, 185, 15, 15);
+          ellipse(223, 165, 15, 15);
+          ellipse(224, 175, 15, 15);
+          ellipse(224, 186, 15, 15);
+          ellipse(171, 149, 15, 15);
+          ellipse(213, 149, 15, 15);
+          ellipse(206, 144, 15, 15);
+          ellipse(198, 143, 15, 15);
+          ellipse(180, 146, 15, 15);
+          ellipse(204, 145, 15, 15);
+          ellipse(189, 144, 15, 15);
+          ellipse(191, 138, 15, 15);
+          ellipse(201, 133, 15, 15);
+          ellipse(181, 135, 15, 15);
+          ellipse(190, 126, 15, 15);
+      };
+      popMatrix();
+      drawZara();
+      // character on card
+
+      butn53.draw();
+      butn8.draw();
+  }; // Scene 3 function (character select Zara) // zara
+
+  var drawScene34 = function() {
+      // Scene 3.4
+      currentScene = 3.4;
+      background(217, 220, 255);
+      textSize(29);
+      textAlign(TOP, LEFT);
+      text("Choose your character", 8, height/10); // title of screen
+
+      butn13.draw();
+
+      pushMatrix();
+      translate(83, 7);
+      textSize(19);
+      popMatrix();
+
+
+      // character on card
+      var drawCarlos = function() {
+          pushMatrix();
+          noStroke();
+
+          fill(224,172,105);
+          ellipse(200, 245, 50,50);//head
+          fill(26,70,99);
+          rect(175, 270, 50, 78);//torso
+          fill(224,172,105);
+          ellipse(170, 332, 10, 10);//left stub
+          ellipse(229, 332, 10, 10);//right stub
+          fill(255, 255, 255);
+          ellipse(190, 241, 10, 10);//left eyeball
+          ellipse(210, 241, 10, 10);//right eyeball
+          fill(0, 0, 0);
+          ellipse(190, 241, 3, 3);//left pupil
+          ellipse(210, 241, 3, 3);//right pupil
+          fill(199, 14, 42);
+          arc(201, 255, 21, 10, 10, 165);//mouth
+          fill(26,70,99);
+          rect(165, 270, 10, 57);//left arm
+          rect(224, 270, 10, 57);//right arm
+          fill(222,213,179);
+          triangle(202, 293, 215, 270, 184, 270);//tie
+          fill(0, 0, 0);
+          ellipse(194, 221, 10, 10);//hair
+          ellipse(186, 224, 10, 10);
+          ellipse(202, 221, 10, 10);
+          ellipse(211, 223, 10, 10);
+          ellipse(179, 230, 10, 10);
+          ellipse(219, 227, 10, 10);
+      };
+      popMatrix();
+      drawCarlos();
+      // character on card
+
+      butn54.draw();
+      butn8.draw();
+  }; // Scene 3 function (character select Carlos) // carlos
+
+  var drawScene35 = function() {
+      // Scene 3.5
+      currentScene = 3.5;
+      background(217, 220, 255);
+      textSize(29);
+      textAlign(TOP, LEFT);
+      text("Choose your character", 8, height/10); // title of screen
+
+      butn14.draw();
+
+      pushMatrix();
+      translate(83, 7);
+      textSize(19);
+      popMatrix();
+
+      // character on card
+      var drawSuzu = function() {
+          pushMatrix();
+          noStroke();
+
+          fill(255,219,172);//head
+          ellipse(193, 172, 60, 60);
+          fill(255, 255, 255);
+          ellipse(201, 165, 13, 13);//left eyeball
+          ellipse(184, 165, 13, 13);//right eyeball
+          fill(0, 0, 0);
+          ellipse(201, 165, 6, 6);//left pupil
+          ellipse(184, 165, 6, 6);//right pupil
+          fill(199, 14, 42);
+          arc(193, 182, 21, 10, 10, 165);//mouth
+          fill(131,113,144);
+          rect(154, 202, 11, 46);//left arm
+          rect(218, 202, 21, 46);//right arm
+          fill(131,113,144);
+          rect(165, 202, 60, 65);//torso
+          fill(255,219,172);
+          ellipse(160, 250, 13, 13);//left stub
+          ellipse(232, 250, 13, 13);//right stub
+          fill(65,56,72);
+          ellipse(194, 208, 8, 8);//buttons on blouse
+          ellipse(194, 220, 8, 8);
+          ellipse(194, 232, 8, 8);
+          ellipse(194, 244, 8, 8);
+          fill(0, 0, 0);
+          ellipse(218, 156, 15, 15);//hair
+          ellipse(168, 154, 15, 15);
+          ellipse(166, 164, 15, 15);
+          ellipse(163, 176, 15, 15);
+          ellipse(164, 185, 15, 15);
+          ellipse(223, 165, 15, 15);
+          ellipse(224, 175, 15, 15);
+          ellipse(224, 186, 15, 15);
+          ellipse(171, 149, 15, 15);
+          ellipse(213, 149, 15, 15);
+          ellipse(206, 144, 15, 15);
+          ellipse(198, 143, 15, 15);
+          ellipse(180, 146, 15, 15);
+          ellipse(204, 145, 15, 15);
+          ellipse(189, 144, 15, 15);
+          arc(193, 159, 51, 29, -178, -1);
+      };
+      popMatrix();
+      drawSuzu();
+      // character on card
+
+      butn55.draw();
+      butn8.draw();
+  }; // Scene 3 function (character select Suzu) // suzu
+
+  var drawScene36 = function() {
+      // Scene 3.6
+      currentScene = 3.6;
+      background(217, 220, 255);
+      textSize(29);
+      textAlign(TOP, LEFT);
+      text("Choose your character", 8, height/10); // title of screen
+
+      butn15.draw();
+
+      pushMatrix();
+      translate(83, 7);
+      textSize(19);
+      popMatrix();
+
+      // character on card
+      var drawSimon = function() {
+          pushMatrix();
+          noStroke();
+
+          fill(141,85,36);
+          ellipse(200, 245, 50,50);//head
+          fill(59,134,134);
+          rect(175, 270, 50, 78);//torso
+          fill(141,85,36);
+          ellipse(170, 332, 10, 10);//left stub
+          ellipse(229, 332, 10, 10);//right stub
+          fill(255, 255, 255);
+          ellipse(190, 241, 10, 10);//left eyeball
+          ellipse(210, 241, 10, 10);//right eyeball
+          fill(0, 0, 0);
+          ellipse(190, 241, 3, 3);//left pupil
+          ellipse(210, 241, 3, 3);//right pupil
+          fill(199, 14, 42);
+          arc(201, 255, 21, 10, 10, 165);//mouth
+          fill(186, 160, 232);
+          rect(165, 270, 10, 57);//left arm
+          rect(224, 270, 10, 57);//right arm
+          fill(255, 255, 255);
+          triangle(202, 293, 215, 271, 184, 271);//tie
+          fill(0, 0, 0);
+          ellipse(194, 221, 10, 10);//hair
+          ellipse(186, 224, 10, 10);
+          ellipse(202, 221, 10, 10);
+          ellipse(211, 223, 10, 10);
+          ellipse(179, 230, 10, 10);
+          ellipse(219, 227, 10, 10);
+      };
+      popMatrix();
+      drawSimon();
+      // character on card
+
+      butn56.draw();
+      butn8.draw();
+  }; // Scene 3 function (character select Simon) // simon
+
+  var drawScene37 = function() {
+      // Scene 3.7
+      currentScene = 3.7;
+      background(217, 220, 255);
+      fill(0, 0, 0);
+      textSize(29);
+      textAlign(TOP, LEFT);
+      text("Choose your character", 8, height/10); // title of screen
+
+      butn16.draw();
+
+      pushMatrix();
+      translate(83, 7);
+      textSize(19);
+      popMatrix();
+
+      // character on card
+      var drawJimin = function() {
+          pushMatrix();
+          noStroke();
+
+          fill(255,219,172);
+          ellipse(200, 245, 50,50);//head
+          fill(33,76,86);
+          rect(175, 270, 50, 78);//torso
+          fill(255,219,172);
+          ellipse(170, 332, 10, 10);//left stub
+          ellipse(229, 332, 10, 10);//right stub
+          fill(255, 255, 255);
+          ellipse(190, 241, 10, 10);//left eyeball
+          ellipse(210, 241, 10, 10);//right eyeball
+          fill(0, 0, 0);
+          ellipse(190, 241, 3, 3);//left pupil
+          ellipse(210, 241, 3, 3);//right pupil
+          fill(199, 14, 42);
+          arc(201, 255, 21, 10, 10, 165);//mouth
+          fill(33,76,86);
+          rect(165, 270, 10, 57);//left arm
+          rect(224, 270, 10, 57);//right arm
+          fill(156,26,26);
+          triangle(202, 293, 215, 270, 184, 270);//tie
+          fill(0, 0 ,0);
+          ellipse(194, 221, 10, 10);//hair
+          ellipse(186, 224, 10, 10);
+          ellipse(202, 221, 10, 10);
+          ellipse(211, 223, 10, 10);
+          ellipse(179, 230, 10, 10);
+          ellipse(219, 227, 10, 10);
+          arc(199, 234, 51, 29, -178, -1);
+      };
+      popMatrix();
+      drawJimin();
+      // character on card
+
+      butn8.draw();
+  }; // Scene 3 function (character select Jimin) // jimin
+
+  var drawScene38 = function() {
+      pushMatrix();
+      translate(0, -50);
+
+      currentScene = 3.8;
+
+      background(217, 220, 255);
+      fill(255, 255, 255);
+      rect(59, 0, 290, 399);
+      fill(0, 0, 0);
+      textSize(19);
+      text("Selena Esteves", 137, 14); // name
+      textSize(9);
+      text("1159 Raynesse Ave", 67, 44); //street address
+      text("Brooklyn, NY 11368", 67, 54); //city
+      text("United States", 67, 64); //country
+
+      text("Cell: 555-2471", 280, 44); // cell
+      text("Email: sesteves@fakemail.com", 213, 54); // cell
+
+      text("She’s a single 28 year old woman looking", 116, 100);
+      text("for a job in the city to be able to pay", 129, 109);
+      text("for the bills and take care of her two dogs", 120, 118);
+      text("Paz and Sparky.", 163, 127);
+
+
+      text("Skills & Tools: PHP, PERL, Access, Oracle, .NET, CSS", 65, 197);
+
+      text("Revamped web application security applications", 65, 209);
+      text("minimizing hacker attacks from 2.3% to 0.02%", 65, 220);
+      text("Revamped web application security applications", 65, 231);
+      text("minimizing hacker attacks from 2.3% to 0.02%", 65, 242);
+      text("Designed and developed user-friendly website", 65, 252);
+      text("including optimized check-out", 65, 261);
+      text("page that increased user clicks, and subsequently", 65, 271);
+      text("customer purchases by 20%.", 65, 281);
+      text("Trained over 50 staff members in internal web functions", 65, 291);
+      text("including steps on", 65, 300);
+      text("how to independently make minor updates or changes", 65, 310);
+
+      text("FOCUS SOLUTIONS", 65, 341);
+      text("Fullerton, CA", 65, 350);
+
+      text("Web Developer", 65, 359);
+      text("Jun 2007 – Apr 2010", 65, 368);
+
+      text("Skills & Tools: ASP, SQL, JavaScript, Visual Basic,", 65, 377);
+      text("XML, C#, Ajax, HTML", 65, 387);
+
+      popMatrix();
+
+      butn6.draw();
+  }; // Character Resume (Selena/LW) // resume (selena) // resume (selena) // resume (selena)
+
+  var drawScene381 = function() {
+      currentScene = 3.81;
+
+      background(217, 220, 255);
+      fill(255, 255, 255);
+      rect(59, 0, 290, 399);
+      fill(0, 0, 0);
+      textSize(19);
+      text("Gerard Fuller", 146, 28); // name
+      textSize(9);
+      text("7480 Lorham Way", 67, 44); //street address
+      text("Albany, NY 21167", 67, 54); //city
+      text("United States", 67, 64); //country
+
+      text("Cell: 555-0395", 280, 44); // cell
+      text("Email: gfuller@fakemail.com", 213, 54); // cell
+
+      text("He is a single 25 year old and has just", 125, 100);
+      text("got out of college, he is getting a job to pay off", 112, 109);
+      text("his student loans. He enjoys fishing and", 127, 118);
+      text("plans to continue his education at a later date.", 115, 127);
+
+
+      text("Skills & Tools: PHP, Access, .NET, CSS", 65, 197);
+
+
+      text("Designed and developed user-friendly website", 65, 212);
+      text("including optimized check-out", 65, 224);
+      text("page that increased user clicks, and subsequently", 65, 235);
+      text("customer purchases by 20%.", 65, 247);
+
+      text("FORTENCE SOLUTIONS", 65, 341);
+      text("Winterford, CT", 65, 350);
+
+      text("Intern Web Developer", 65, 359);
+      text("Apr 2010 – May 2010", 65, 368);
+
+      text("Skills & Tools: JavaScript and Visual Basic,", 65, 377);
+
+      butn6.draw();
+  }; // Character Resume (Gerard/WM) // resume (gerard) // resume (gerard)
+
+  var drawScene382 = function() {
+      currentScene = 3.82;
+
+      background(217, 220, 255);
+      fill(255, 255, 255);
+      rect(59, 0, 290, 399);
+      fill(0, 0, 0);
+      textSize(19);
+      text("Linda Craig", 146, 28); // name
+      textSize(9);
+      text("6754 Fairholt Rd", 67, 44); //street address
+      text("Roseedge, NY 98109", 67, 54); //city
+      text("United States", 67, 64); //country
+
+      text("Cell: 555-0395", 280, 44); // cell
+      text("Email: lcraig@fakemail.com", 224, 54); // cell
+
+      text("She is a single 20 year old who dabbles", 117, 100);
+      text("in fashion and has nothing to do at home so she", 99, 109);
+      text("decides to get a job even though she already", 106, 118);
+      text("has a lot of money.", 164, 127);
+
+
+      text("Skills & Tools: PHP, Access, .NET, CSS", 65, 197);
+
+
+      text("Designed and developed user-friendly website", 65, 212);
+      text("including optimized check-out", 65, 224);
+      text("page that increased user clicks, and subsequently", 65, 235);
+      text("customer purchases by 20%.", 65, 247);
+
+      text("FORTENCE SOLUTIONS", 65, 341);
+      text("Winterford, CT", 65, 350);
+
+      text("Intern Web Developer", 65, 359);
+      text("Apr 2010 – May 2010", 65, 368);
+
+      text("Skills & Tools: JavaScript and Visual Basic,", 65, 377);
+
+      butn6.draw();
+  }; // Character Resume (Linda/WW) // resume (linda)
+
+  var drawScene383 = function() {
+      currentScene = 3.83;
+
+      background(217, 220, 255);
+      fill(255, 255, 255);
+      rect(59, 0, 290, 399);
+      fill(0, 0, 0);
+      textSize(19);
+      text("Zara Jacobs", 146, 28); // name
+      textSize(9);
+      text("7092 Springbeach Ave", 67, 44); //street address
+      text("Winterfox, NY 21456", 67, 54); //city
+      text("United States", 67, 64); //country
+
+      text("Cell: 555-9302", 280, 44); // cell
+      text("Email: zjacobs@fakemail.com", 213, 54); // cell
+
+      text("She is a 29 year old woman who has two kids and a", 101, 100);
+      text("starving artist husband who is trying to get his art", 105, 109);
+      text("into major galleries so she decides to get a job", 110, 118);
+      text("in the meantime to support the family.", 128, 127);
+
+
+      text("Skills & Tools: PHP, PERL, Access, Oracle, .NET, CSS", 65, 197);
+
+      text("Revamped web application security applications", 65, 209);
+      text("minimizing hacker attacks from 2.3% to 0.02%", 65, 220);
+      text("Revamped web application security applications", 65, 231);
+      text("minimizing hacker attacks from 2.3% to 0.02%", 65, 242);
+      text("Designed and developed user-friendly website", 65, 252);
+      text("including optimized check-out", 65, 261);
+      text("page that increased user clicks, and subsequently", 65, 271);
+      text("customer purchases by 20%.", 65, 281);
+      text("Trained over 50 staff members in internal web functions", 65, 291);
+      text("including steps on", 65, 300);
+      text("how to independently make minor updates or changes", 65, 310);
+
+      text("FOCUS SOLUTIONS", 65, 341);
+      text("Fullerton, CA", 65, 350);
+
+      text("Web Developer", 65, 359);
+      text("Jun 2007 – Apr 2010", 65, 368);
+
+      text("Skills & Tools: ASP, SQL, JavaScript, Visual Basic,", 65, 377);
+      text("XML, C#, Ajax, HTML", 65, 387);
+
+      butn6.draw();
+  }; // Character Resume (Zara/AAW) // resume (zara)
+
+  var drawScene384 = function() {
+      currentScene = 3.84;
+
+      background(217, 220, 255);
+      fill(255, 255, 255);
+      rect(59, 0, 290, 399);
+      fill(0, 0, 0);
+      textSize(19);
+      text("Carlos Escarra", 146, 28); // name
+      textSize(9);
+      text("5672 Mallowapple Ave", 67, 44); //street address
+      text("Glassport City, NY 21456", 67, 54); //city
+      text("United States", 67, 64); //country
+
+      text("Cell: 555-2398", 280, 44); // cell
+      text("Email: cescarra@fakemail.com", 213, 54); // cell
+
+      text("He is a 33 year old man looking for a job because", 101, 100);
+      text("he lost his other job due to undisclosed reasons.", 105, 109);
+      text("He’s married and has no kids.", 137, 118);
+
+      text("Skills & Tools: PHP, PERL, Access, Oracle, .NET, CSS", 65, 197);
+
+      text("Revamped web application security applications", 65, 209);
+      text("minimizing hacker attacks from 2.3% to 0.02%", 65, 220);
+      text("Revamped web application security applications", 65, 231);
+      text("minimizing hacker attacks from 2.3% to 0.02%", 65, 242);
+      text("Designed and developed user-friendly website", 65, 252);
+      text("including optimized check-out", 65, 261);
+      text("page that increased user clicks, and subsequently", 65, 271);
+      text("customer purchases by 20%.", 65, 281);
+      text("Trained over 50 staff members in internal web functions", 65, 291);
+      text("including steps on", 65, 300);
+      text("how to independently make minor updates or changes", 65, 310);
+
+      text("FOCUS SOLUTIONS", 65, 341);
+      text("Fullerton, CA", 65, 350);
+
+      text("Web Developer", 65, 359);
+      text("Jun 2007 – Apr 2010", 65, 368);
+
+      text("Skills & Tools: ASP, SQL, JavaScript, Visual Basic,", 65, 377);
+      text("XML, C#, Ajax, HTML", 65, 387);
+
+      butn6.draw();
+  }; // Character Resume (Carlos/LM) // resume (carlos)
+
+  var drawScene385 = function() {
+      currentScene = 3.85;
+
+      background(217, 220, 255);
+      fill(255, 255, 255);
+      rect(59, 0, 290, 399);
+      fill(0, 0, 0);
+      textSize(19);
+      text("Suzu Miyamoto", 146, 28); // name
+      textSize(9);
+      text("2345 Linhill Ave", 67, 44); //street address
+      text("Glassport City, NY 21456", 67, 54); //city
+      text("United States", 67, 64); //country
+
+      text("Cell: 555-3476", 280, 44); // cell
+      text("Email: smiyamoto@fakemail.com", 213, 54); // cell
+
+      text("She is 26 years old and has a degree in computer science,", 85, 100);
+      text("but never really got the chance to use it; however,", 105, 109);
+      text("she just found out that her husband was fired so she decides", 81, 118);
+      text("to get a job while he searches for a new one.", 111, 127);
+
+
+      text("Skills & Tools: PHP, PERL, Access, Oracle, .NET, CSS", 65, 197);
+
+      text("Revamped web application security applications", 65, 209);
+      text("minimizing hacker attacks from 2.3% to 0.02%", 65, 220);
+      text("Revamped web application security applications", 65, 231);
+      text("minimizing hacker attacks from 2.3% to 0.02%", 65, 242);
+      text("Designed and developed user-friendly website", 65, 252);
+      text("including optimized check-out", 65, 261);
+      text("page that increased user clicks, and subsequently", 65, 271);
+      text("customer purchases by 20%.", 65, 281);
+      text("Trained over 50 staff members in internal web functions", 65, 291);
+      text("including steps on", 65, 300);
+      text("how to independently make minor updates or changes", 65, 310);
+
+      text("FOCUS SOLUTIONS", 65, 341);
+      text("Fullerton, CA", 65, 350);
+
+      text("Web Developer", 65, 359);
+      text("Jun 2007 – Apr 2010", 65, 368);
+
+      text("Skills & Tools: ASP, SQL, JavaScript, Visual Basic,", 65, 377);
+      text("XML, C#, Ajax, HTML", 65, 387);
+
+      butn6.draw();
+  }; // Character Resume (Suzu/AW) // resume (suzu)
+
+  var drawScene386 = function() {
+      currentScene = 3.86;
+
+      background(217, 220, 255);
+      fill(255, 255, 255);
+      rect(59, 0, 290, 399);
+      fill(0, 0, 0);
+      textSize(19);
+      text("Simon Carter", 146, 28); // name
+      textSize(9);
+      text("9746 Vertbell Ave", 67, 44); //street address
+      text("Hedgebank, NY 21456", 67, 54); //city
+      text("United States", 67, 64); //country
+
+      text("Cell: 555-2475", 280, 44); // cell
+      text("Email: scarter@fakemail.com", 213, 54); // cell
+
+      text("He is a married 30 year old man looking for a", 110, 100);
+      text("job because he is taking care of his family", 117, 109);
+      text("including his sick mother who desperately needs", 101, 118);
+      text("the money.", 176, 127);
+
+
+      text("Skills & Tools: PHP, PERL, Access, Oracle, .NET, CSS", 65, 197);
+
+      text("Revamped web application security applications", 65, 209);
+      text("minimizing hacker attacks from 2.3% to 0.02%", 65, 220);
+      text("Revamped web application security applications", 65, 231);
+      text("minimizing hacker attacks from 2.3% to 0.02%", 65, 242);
+      text("Designed and developed user-friendly website", 65, 252);
+      text("including optimized check-out", 65, 261);
+      text("page that increased user clicks, and subsequently", 65, 271);
+      text("customer purchases by 20%.", 65, 281);
+      text("Trained over 50 staff members in internal web functions", 65, 291);
+      text("including steps on", 65, 300);
+      text("how to independently make minor updates or changes", 65, 310);
+
+      text("FOCUS SOLUTIONS", 65, 341);
+      text("Fullerton, CA", 65, 350);
+
+      text("Web Developer", 65, 359);
+      text("Jun 2007 – Apr 2010", 65, 368);
+
+      text("Skills & Tools: ASP, SQL, JavaScript, Visual Basic,", 65, 377);
+      text("XML, C#, Ajax, HTML", 65, 387);
+
+      butn6.draw();
+  }; // Character Resume (Simon/AAM) // resume (simon)
+
+  var drawScene387 = function() {
+      currentScene = 3.87;
+
+      background(217, 220, 255);
+      fill(255, 255, 255);
+      rect(59, 0, 290, 399);
+      fill(0, 0, 0);
+      textSize(19);
+      text("Jimin Park", 146, 28); // name
+      textSize(9);
+      text("3476 Edgefield Way", 67, 44); //street address
+      text("Beachholt, NY 21456", 67, 54); //city
+      text("United States", 67, 64); //country
+
+      text("Cell: 555-8765", 280, 44); // cell
+      text("Email: jpark@fakemail.com", 213, 54); // cell
+
+      text("He is 32 years old and has just found out that his", 102, 100);
+      text("parents are coming to visit so he decides to get", 106, 109);
+      text("a job to be able to have money and buy his", 114, 118);
+      text("parents an apartment near him.", 135, 127);
+
+
+      text("Skills & Tools: PHP, PERL, Access, Oracle, .NET, CSS", 65, 197);
+
+      text("Revamped web application security applications", 65, 209);
+      text("minimizing hacker attacks from 2.3% to 0.02%", 65, 220);
+      text("Revamped web application security applications", 65, 231);
+      text("minimizing hacker attacks from 2.3% to 0.02%", 65, 242);
+      text("Designed and developed user-friendly website", 65, 252);
+      text("including optimized check-out", 65, 261);
+      text("page that increased user clicks, and subsequently", 65, 271);
+      text("customer purchases by 20%.", 65, 281);
+      text("Trained over 50 staff members in internal web functions", 65, 291);
+      text("including steps on", 65, 300);
+      text("how to independently make minor updates or changes", 65, 310);
+
+      text("FOCUS SOLUTIONS", 65, 341);
+      text("Fullerton, CA", 65, 350);
+
+      text("Web Developer", 65, 359);
+      text("Jun 2007 – Apr 2010", 65, 368);
+
+      text("Skills & Tools: ASP, SQL, JavaScript, Visual Basic,", 65, 377);
+      text("XML, C#, Ajax, HTML", 65, 387);
+
+      butn6.draw();
+  }; // Character Resume (Jimin/AM) // resume (jimin)
+
+  var drawScene4 = function() {
+      // Scene 4: Going to Interview
+      fill(0, 0, 0);
+
+      currentScene = 4;
+
+      background(82, 222, 240);
+      fill(255, 170, 0);
+      ellipse(51, 63, sunRadius, sunRadius);
+
+      // position of the car
+      var intro_x = -203;
+
+      for (var i = 0; i < 100; i++) {
+          fill(255, 170, 0);
+          ellipse(134, 45, sunRadius, sunRadius);
+
+          fill(0, 0, 0);
+          rect(0, 282, 400, 77); // road
+          fill(196, 176, 196);
+          rect(0, 353, 400, 30); // sidewalk
+          rect(0, 260, 400, 26); // sidewalk
+
+          //lower sidewalk
+          line(25, 306, 26, 384); // sidewalk line
+          line(71, 306, 73, 384); // sidewalk line
+          line(121, 306, 122, 384); // sidewalk line
+          line(174, 306, 176, 384); // sidewalk line
+          line(222, 306, 222, 384); // sidewalk line
+          line(271, 306, 272, 384); // sidewalk line
+          line(317, 306, 318, 384); // sidewalk line
+          line(363, 306, 363, 384); // sidewalk line
+
+          // upper sidewalk
+          line(28, 285, 28, 256);
+          line(70, 285, 70, 256);
+          line(116, 285, 115, 256);
+          line(167, 285, 167, 256);
+          line(218, 285, 218, 256);
+          line(266, 285, 266, 256);
+          line(319, 285, 319, 259);
+          line(369, 285, 369, 259);
+
+          fill(255, 255, 255);
+          rect(145, 309, 100, 16); // road lines
+          fill(255, 255, 255);
+          rect(16, 309, 100, 16); // road lines
+          fill(255, 255, 255);
+          rect(306, 309, 100, 16); // road lines
+
+          // buildings
+          fill(84, 62, 17);
+          rect(-24, 24, 150, 235);
+          fill(84, 62, 17);
+          rect(146, 24, 150, 235);
+          fill(84, 62, 17);
+          rect(321, 24, 150, 235);
+
+          // building one windows
+          fill(201, 237, 242);
+          rect(52, 31, 64, 50); //windows
+          rect(-24, 31, 64, 50); //windows
+          rect(52, 92, 64, 50); //windows
+          rect(52, 153, 64, 50); //windows
+          rect(-24, 154, 64, 50); //windows
+          rect(-24, 92, 64, 50); //windows
+          fill(94, 121, 125);
+          rect(198, 204, 46, 56); //door (dark)
+          rect(24, 204, 46, 56); //door (light)
+
+          // building two windows
+          fill(201, 237, 242);
+          rect(155, 31, 44, 50); //windows
+          rect(242, 31, 44, 50); //windows
+          rect(155, 94, 131, 50); //windows
+          rect(155, 155, 44, 50); //windows
+          rect(243, 155, 44, 50); //windows
+          fill(201, 237, 242);
+          rect(201, 207, 40, 50); //door (dark)
+          rect(27, 207, 40, 50); //door (light)
+
+          // building three windows
+          fill(201, 237, 242);
+          rect(329, 31, 64, 50); //windows
+          rect(330, 92, 64, 50); //windows
+          rect(331, 154, 64, 50); //windows
+          rect(-24, 92, 64, 50); //windows
+          fill(94, 121, 125);
+          rect(381, 207, 40, 53); //door (dark)
+          fill(201, 237, 242);
+          rect(384, 207, 40, 50); //door (light)
+          // buildings
+
+          fill(255, 0, 115);
+          rect(intro_x + 16, 208, 217, 110); // bus
+          fill(201, 237, 242);
+          rect(intro_x + 91, 215, 64, 50); //windows
+          rect(intro_x + 22, 215, 64, 50); //windows
+          rect(intro_x + 160, 215, 64, 50); //windows
+          // draw the wheels
+          fill(77, 66, 66);
+          ellipse(intro_x + 36, 325, 24, 24); // wheel
+          ellipse(intro_x + 213, 325, 24, 24); // wheel
+          fill(245, 245, 108);
+          arc(intro_x + 220, 281, 24, 24, 1, 180); // headlight
+
+          fill(58, 107, 65);
+          rect(1, 381, 400, 77); // grass
+
+          intro_x = intro_x + 2;
+
+      }
+      butn3.draw();
+  }; // Scene 4 function // going to interview // going to interview
+
+  var anima = function() {
+      if (currentScene === 4) {
+          drawScene4();
+      }
+  };
+
+  var drawScene5 = function() {
+      // Scene 5: Arriving
+      currentScene = 5;
+
+      background(82, 222, 240);
+      fill(255, 170, 0);
+      ellipse(51, 63, sunRadius, sunRadius);
+
+      // building
+      fill(117, 109, 109);
+      rect(84, 2, sceneSize + 72, sceneSize + 154); // building
+      fill(255, 255, 255);
+      rect(95, sceneSize + -23, sceneSize + 51, sceneSize + -105); // sign
+      fill(201, 237, 242);
+      rect(237, 72, 64, 50); //windows
+      rect(166, 72, 64, 50); //windows
+      fill(94, 121, 125);
+      rect(202, 219, 46, 85); //door (right)
+      rect(151, 219, 46, 85); //door (left)
+      fill(201, 237, 242);
+      rect(206, 223, 37, 76); //door (right)
+      rect(156, 223, 37, 76); //door (left)
+      rect(94, 72, 64, 50); //windows
+      rect(237, 13, 64, 50); //windows
+      rect(166, 13, 64, 50); //windows
+      rect(95, 13, 64, 50); //windows
+
+      fill(117, 109, 109);
+      rect(324, 45, sceneSize + 72, sceneSize + 102); // building
+      fill(201, 237, 242);
+      rect(390, 217, 64, 87); //windows
+      rect(237, 13, 64, 50); //windows
+      rect(166, 13, 64, 50); //windows
+      rect(95, 13, 64, 50); //windows
+      fill(117, 109, 109);
+      rect(-156, 45, sceneSize + 72, sceneSize + 102); // building
+      fill(201, 237, 242);
+      rect(342, 72, 64, 50); //windows
+      rect(-4, 59, 64, 50); //windows
+      rect(-3, 134, 64, 50); //windows
+      rect(-46, 218, 64, 87); //windows
+
+      // road + sidewalk
+      fill(0, 0, 0);
+      rect(0, 337, 400, 111); // road
+      fill(196, 176, 196);
+      rect(0, 305, 400, 43); // sidewalk
+      line(25, 306, 24, 400);
+      line(71, 306, 73, 400);
+      line(121, 306, 122, 400);
+      line(174, 306, 176, 400);
+      line(222, 306, 222, 400);
+      line(271, 306, 272, 400);
+      line(317, 306, 318, 400);
+      line(363, 306, 363, 400);
+
+      fill(0, 0, 0);
+      textSize(20);
+      text("Solar Chief & Co.", 125, 149);
+
+      butn7.draw();
+  }; // Scene 5 function // arriving to interview // arriving
+
+  var drawScene6 = function() {
+      // Scene 6: Interview
+      background(0, 0, 0);
+      fill(255, 255, 255);
+
+      currentScene = 6;
+
+      textAlign(TOP, LEFT);
+      text("The Interview", 8, height/10);
+      btn13.draw();
+  }; // Scene 6 function // interview
+
+  var drawScene61 = function() {
+    currentScene = 6.1;
+    //first certificate
+    var x = 16;
+    var y = 23;
+
+    fill(218, 235, 232);
+    rect(0, 0 ,398 ,398);
+
+    noStroke();
+    fill(0, 0, 0);
+    rect(x, y, 108, 73);
+
+    fill(247, 239, 239);
+    rect(x+11, y+10, 87, 54);
+
+    pushMatrix();
+    translate(43, 44);
+    var f11 = createFont("cursive", 20);
+    textFont(f11, 6);
+    fill(0, 0, 0);
+    rotate(0);
+    text("Certificate of Honor", 0, 0);
+    popMatrix();
+
+    pushMatrix();
+    translate(41, 53);
+    var f11 = createFont("cursive", 20);
+    textFont(f11, 8);
+    fill(0, 0, 0);
+    rotate(0);
+    text("Martin Spalding", 0, 0);
+    popMatrix();
+
+    pushMatrix();
+    translate(37, 63);
+    var f11 = createFont("cursive", 20);
+    textFont(f11, 4);
+    fill(0, 0, 0);
+    rotate(0);
+    text("this was written to honor martin for", 0, 0);
+    text("something not sure for what but it wa", 0, 4);
+    text("was for something and yeah", 0, 8);
+    popMatrix();
+
+    //second certificate
+    noStroke();
+    fill(0, 0, 0);
+    rect(272, 23, 108, 73);
+
+    fill(247, 239, 239);
+    rect(283, 33, 87, 54);
+
+    //certificate seal
+    pushMatrix();
+    translate(318, 50);
+    fill(235, 228, 87);
+    ellipse(10, 10, 10, 10);
+    popMatrix();
+
+    pushMatrix();
+    translate(83, 68);
+    fill(235, 228, 87);
+    ellipse(10, 10, 10, 10);
+    popMatrix();
+
+    //bookshelf
+    noStroke();
+    fill(0, 0, 0);
+    rect(158, 73, 82, 73);
+
+    fill(201, 123, 201);
+    rect(163, 83, 72, 54);
+
+    //books on bookshelf
+    pushMatrix();
+    stroke(0, 0, 0);
+    fill(173, 173, 173);
+    beginShape(QUAD_STRIP);
+    translate(33, -137);
+    vertex(130, 220);
+    vertex(130, 275);
+    vertex(150, 220);
+    vertex(150, 275);
+    vertex(165, 220);
+    vertex(165, 275);
+    vertex(182, 220);
+    vertex(182, 275);
+    vertex(202, 220);
+    vertex(202, 275);
+    endShape();
+    popMatrix();
+
+    pushMatrix();
+    translate(287, -70);
+    var f11 = createFont("cursive", 20);
+    textFont(f11, 9);
+    fill(0, 0, 0);
+    rotate(0);
+    text("District of Wizonia", 3, 113);
+    popMatrix();
+
+    pushMatrix();
+    translate(278, -56);
+    var f11 = createFont("cursive", 20);
+    textFont(f11, 4);
+    fill(0, 0, 0);
+    rotate(0);
+    text("Cwords and words and more wordsand word", 13, 124);
+    text("Cwords but in a different format so that it", 13, 129);
+    popMatrix();
+
+    pushMatrix();
+    var f3 = createFont("times", 20);
+    textFont(f3, 6);
+    translate(177,83);
+    fill(0, 0, 0);
+    rotate(190.1);
+    text("HOW TO SUCCEED", 0, 0);
+    text("THE GIVER", 12, -18);
+    text("THE INTERNET", 4, -33);
+    text("WILL ROBOTS", 7, -55);
+    text("TAKE OUR JOBS?", 4, -48);
+    popMatrix();
+
+    //chair
+    pushMatrix();
+    translate(57,56);
+    fill(48, 48, 48);
+    beginShape();
+    curveVertex(-165, 72);
+    curveVertex(165, 267);
+    curveVertex(203, 132);
+    curveVertex(76, 127);
+    curveVertex(76, 259);
+    curveVertex(242, 206);
+    endShape();
+    popMatrix();
+
+    //character
+    pushMatrix();
+    noStroke();
+    scale(1.5);
+    var currentScene;
+    var x = 130;
+    var y = 139;
+    var w = 50;
+    var h = 50;
+
+    fill(255, 224, 189);
+    ellipse(x, y, w, h);//head
+    fill(186, 160, 232);
+    rect(x-25, y+25, w, h+28);//torso
+    fill(161, 150, 161);
+    rect(x+10, y+103, w-35, h-10);//right leg
+    rect(x-25, y+103, w-35, h-10);//left leg
+    fill(255, 224, 189);
+    ellipse(x-30, y+87, w-40, h-40);//left stub
+    ellipse(x+32, y+87, w-40, h-40);//right stub
+    fill(255, 255, 255);
+    ellipse(x-10, y-4, w-40, h-40);//left eyeball
+    ellipse(x+10, y-4, w-40, h-40);//right eyeball
+    fill(0, 0, 0);
+    ellipse(x-10, y-4, w-47, w-47);//left pupil
+    ellipse(x+10, y-4, w-47, h-47);//right pupil
+    fill(199, 14, 42);
+    arc(x+1, y+10, w-29, h-40, 10, 165);//mouth
+    fill(0, 0, 0);
+    ellipse(x-17, y+149, w-35, h-40);//left foot stub
+    ellipse(x+18, y+149, w-35, h-40);//right foot stub
+    fill(186, 160, 232);
+    rect(x-36, y+25, w-40, h+7);//left arm
+    rect(x+26, y+25, w-40, h+7);//right arm
+    fill(255, 0, 0);
+    triangle(x+2, y+48, x+15, y+26, x-16, y+26);//tie
+    fill(0, 0, 0);
+    ellipse(x-6, y-24, w-40, h-40);//hair
+    ellipse(x-14, y-21, w-40, h-40);
+    ellipse(x+2, y-24, w-40, h-40);
+    ellipse(x+11, y-23, w-40, h-40);
+    ellipse(x-21, y-15, w-40, h-40);
+    ellipse(x+19, y-18, w-40, h-40);
+
+    popMatrix();
+
+        //desk
+    fill(120, 99, 72);
+    rect(1, 398, 397, -83);
+
+    //fill space
+    pushMatrix();
+    fill(0, 0, 0);
+    rect(0, 398, 399, 155);
+    popMatrix();
+
+        //desk decorations
+    pushMatrix();
+    fill(255, 255, 255);
+    translate(58,224);
+    rect(93, 98, 77, 69);
+    popMatrix();
+
+    //paper text
+    pushMatrix();
+    translate(286,467);
+    rotate(180);
+    textSize(8);
+    fill(0, 0, 0);
+    text("resume", 81, 90);
+    popMatrix();
+
+    //dialogue
+    pushMatrix();
+    translate(23, 322);
+    fill(69, 69, 69);
+    rect(0, 0, 359, 64);
+    popMatrix();
+
+    pushMatrix();
+    translate(29, 326);
+    fill(255, 255, 255);
+    rect(0, 0, 347, 55);
+    popMatrix();
+
+        //dialogue text
+    pushMatrix();
+    var f26 = createFont("Verdana", 20);
+    textFont(f26, 13);
+    translate(35,330);
+    fill(0, 0, 0);
+    text("MARTIN SPALDING:", 0, 0);
+    popMatrix();
+
+    pushMatrix();
+    textSize(14);
+    translate(38,346);
+    fill(0, 0, 0);
+    text("Hello, nice to meet you. I am Martin Spalding.", 0, 0);
+    popMatrix();
+    btn14.draw();
+  };
+
+  var drawScene62 = function() {
+      currentScene = 6.2;
+      //wall
+      fill(218, 235, 232);
+      rect(0,0,398,398);
+
+      //door
+      pushMatrix();
+      translate(132,67);
+      fill(166, 131, 48);
+      rect(0, 0, 126, 184);
+      popMatrix();
+
+      //door
+      pushMatrix();
+      translate(132,67);
+      fill(120, 99, 72);
+      rect(0, 0, 126, 184);
+      popMatrix();
+
+      //door decoration
+      pushMatrix();
+      translate(150,79);
+      noFill();
+      rect(0, 0, 92, 71);
+      popMatrix();
+
+      pushMatrix();
+      translate(150,173);
+      noFill();
+      rect(0, 0, 92, 71);
+      popMatrix();
+
+      pushMatrix();
+      translate(246, 164);
+      noStroke();
+      fill(255, 242, 0);
+      ellipse(0, 0, 10, 10);
+      popMatrix();
+      //floor
+      pushMatrix();
+      translate(0,248);
+      noStroke();
+      fill(235, 235, 235);
+      rect(1, 0, 397, 90);
+      popMatrix();
+
+      //wall decoration (left side strip)
+      pushMatrix();
+      translate(1, 238);
+      noStroke();
+      fill(255, 255, 255);
+      rect(0, 0, 132, 13);
+      popMatrix();
+
+      pushMatrix();
+      rotate(102.1);
+      translate(67, -133);
+      noStroke();
+      fill(255, 255, 255);
+      rect(0, 0, 183, 13);
+      popMatrix();
+
+      //wall decoration (right side strip)
+      pushMatrix();
+      translate(258, 238);
+      noStroke();
+      fill(255, 255, 255);
+      rect(0, 0, 140, 13);
+      popMatrix();
+
+      pushMatrix();
+      rotate(1.57);
+      translate(56, -270);
+      noStroke();
+      fill(255, 255, 255);
+      rect(0, 0, 190, 13);
+      popMatrix();
+
+      pushMatrix();
+      rotate(169.64);
+      translate(120, 57);
+      noStroke();
+      fill(255, 255, 255);
+      rect(0, 0, 140, 13);
+      popMatrix();
+
+      //chair
+      pushMatrix();
+      translate(55,60);
+      fill(48, 48, 48);
+      rotate(-0.0);
+      beginShape();
+      curveVertex(-165,  72);
+      curveVertex(165,  267);
+      curveVertex(203,  132);
+      curveVertex(76,  127);
+      curveVertex(76, 259);
+      curveVertex(242, 206);
+      endShape();
+      popMatrix();
+
+      //character
+      pushMatrix();
+      translate(-69,-12);
+      noStroke();
+      scale(1.35);
+      var drawPerson = function() {
+      fill(224,172,105);//head
+      ellipse(193, 172, 60, 60);
+      fill(255, 255, 255);
+      ellipse(201, 165, 13, 13);//left eyeball
+      ellipse(184, 165, 13, 13);//right eyeball
+      fill(0, 0, 0);
+      ellipse(201, 165, 6, 6);//left pupil
+      ellipse(184, 165, 6, 6);//right pupil
+      fill(199, 14, 42);
+      arc(193, 182, 21, 10, 10, 165);//mouth
+      fill(97, 212, 155);
+      rect(154, 202, 11, 46);//left arm
+      rect(218, 202, 21, 46);//right arm
+      fill(97, 212, 155);
+      rect(165, 202, 60, 65);//torso
+      fill(224,172,105);
+      ellipse(160, 250, 13, 13);//left stub
+      ellipse(232, 250, 13, 13);//right stub
+      fill(230, 216, 216);
+      ellipse(194, 208, 8, 8);
+      ellipse(194, 220, 8, 8);
+      ellipse(194, 232, 8, 8);
+      ellipse(194, 244, 8, 8);
+      fill(0, 0, 0);
+      ellipse(218, 156, 15, 15);//hair
+      ellipse(168, 154, 15, 15);
+      ellipse(166, 164, 15, 15);
+      ellipse(163, 176, 15, 15);
+      ellipse(164, 185, 15, 15);
+      ellipse(223, 165, 15, 15);
+      ellipse(224, 175, 15, 15);
+      ellipse(224, 186, 15, 15);
+      ellipse(171, 149, 15, 15);
+      ellipse(213, 149, 15, 15);
+      ellipse(206, 144, 15, 15);
+      ellipse(198, 143, 15, 15);
+      ellipse(180, 146, 15, 15);
+      ellipse(204, 145, 15, 15);
+      ellipse(189, 144, 15, 15);
+      };
+      drawPerson();
+      popMatrix();
+
+      //desk
+      fill(120, 99, 72);
+      rect(1, 398, 397, -83);
+
+      //dialogue
+      pushMatrix();
+      translate(23, 322);
+      fill(69, 69, 69);
+      rect(0, 0, 359, 64);
+      popMatrix();
+
+      pushMatrix();
+      translate(29, 326);
+      fill(255, 255, 255);
+      rect(0, 0, 347, 55);
+      popMatrix();
+
+      //dialogue text
+      pushMatrix();
+      var f26 = createFont("Verdana", 20);
+      textFont(f26, 13);
+      translate(35,330);
+      fill(0, 0, 0);
+      text("SELENA ESTEVES:", 0, 0);
+      popMatrix();
+
+      pushMatrix();
+      textSize(14);
+      translate(38,345);
+      fill(0, 0, 0);
+      text("Nice to meet you too, my name is Selena", 0, 0);
+      text("Esteves.", 0, 13);
+      popMatrix();
+      btn15.draw();
+
+      //fill space
+      pushMatrix();
+      fill(0, 0, 0);
+      rect(0, 398, 399, 155);
+      popMatrix();
+  };
+
+  var drawScene63 = function() {
+    currentScene = 6.3;
+    //first certificate
+    var x = 16;
+    var y = 23;
+
+    fill(218, 235, 232);
+    rect(0, 0 ,398 ,398);
+
+    noStroke();
+    fill(0, 0, 0);
+    rect(x, y, 108, 73);
+
+    fill(247, 239, 239);
+    rect(x+11, y+10, 87, 54);
+
+    pushMatrix();
+    translate(43, 44);
+    var f11 = createFont("cursive", 20);
+    textFont(f11, 6);
+    fill(0, 0, 0);
+    rotate(0);
+    text("Certificate of Honor", 0, 0);
+    popMatrix();
+
+    pushMatrix();
+    translate(41, 53);
+    var f11 = createFont("cursive", 20);
+    textFont(f11, 8);
+    fill(0, 0, 0);
+    rotate(0);
+    text("Martin Spalding", 0, 0);
+    popMatrix();
+
+    pushMatrix();
+    translate(37, 63);
+    var f11 = createFont("cursive", 20);
+    textFont(f11, 4);
+    fill(0, 0, 0);
+    rotate(0);
+    text("this was written to honor martin for", 0, 0);
+    text("something not sure for what but it wa", 0, 4);
+    text("was for something and yeah", 0, 8);
+    popMatrix();
+
+    //second certificate
+    noStroke();
+    fill(0, 0, 0);
+    rect(272, 23, 108, 73);
+
+    fill(247, 239, 239);
+    rect(283, 33, 87, 54);
+
+    //certificate seal
+    pushMatrix();
+    translate(318, 48);
+    fill(235, 228, 87);
+    ellipse(10, 10, 10, 10);
+    popMatrix();
+
+    pushMatrix();
+    translate(83, 68);
+    fill(235, 228, 87);
+    ellipse(10, 10, 10, 10);
+    popMatrix();
+
+    //bookshelf
+    noStroke();
+    fill(0, 0, 0);
+    rect(158, 73, 82, 73);
+
+    fill(201, 123, 201);
+    rect(163, 83, 72, 54);
+
+    //books on bookshelf
+    pushMatrix();
+    stroke(0, 0, 0);
+    fill(173, 173, 173);
+    beginShape(QUAD_STRIP);
+    translate(33, -137);
+    vertex(130, 220);
+    vertex(130, 275);
+    vertex(150, 220);
+    vertex(150, 275);
+    vertex(165, 220);
+    vertex(165, 275);
+    vertex(182, 220);
+    vertex(182, 275);
+    vertex(202, 220);
+    vertex(202, 275);
+    endShape();
+    popMatrix();
+
+    pushMatrix();
+    translate(287, -70);
+    var f11 = createFont("cursive", 20);
+    textFont(f11, 9);
+    fill(0, 0, 0);
+    rotate(0);
+    text("District of Wizonia", 3, 113);
+    popMatrix();
+
+    pushMatrix();
+    translate(278, -56);
+    var f11 = createFont("cursive", 20);
+    textFont(f11, 4);
+    fill(0, 0, 0);
+    rotate(0);
+    text("Cwords and words and more wordsand word", 13, 124);
+    text("Cwords but in a different format so that it", 13, 129);
+    popMatrix();
+
+    pushMatrix();
+    var f3 = createFont("times", 20);
+    textFont(f3, 6);
+    translate(177,83);
+    fill(0, 0, 0);
+    rotate(190.1);
+    text("HOW TO SUCCEED", 0, 0);
+    text("THE GIVER", 12, -18);
+    text("THE INTERNET", 4, -33);
+    text("WILL ROBOTS", 7, -55);
+    text("TAKE OUR JOBS?", 4, -48);
+    popMatrix();
+      //chair
+      pushMatrix();
+      translate(57,56);
+      fill(48, 48, 48);
+      beginShape();
+      curveVertex(-165,  72);
+      curveVertex(165,  267);
+      curveVertex(203,  132);
+      curveVertex(76,  127);
+      curveVertex(76, 259);
+      curveVertex(242, 206);
+      endShape();
+      popMatrix();
+
+      //character
+      pushMatrix();
+      noStroke();
+      scale(1.5);
+      var currentScene;
+      var x = 130;
+      var y = 139;
+      var w = 50;
+      var h = 50;
+
+          fill(255, 224, 189);
+          ellipse(x, y, w, h);//head
+          fill(186, 160, 232);
+          rect(x-25, y+25, w, h+28);//torso
+          fill(161, 150, 161);
+          rect(x+10, y+103, w-35, h-10);//right leg
+          rect(x-25, y+103, w-35, h-10);//left leg
+          fill(255, 224, 189);
+          ellipse(x-30, y+87, w-40, h-40);//left stub
+          ellipse(x+32, y+87, w-40, h-40);//right stub
+          fill(255, 255, 255);
+          ellipse(x-10, y-4, w-40, h-40);//left eyeball
+          ellipse(x+10, y-4, w-40, h-40);//right eyeball
+          fill(0, 0, 0);
+          ellipse(x-10, y-4, w-47, w-47);//left pupil
+      ellipse(x+10, y-4, w-47, h-47);//right pupil
+      fill(199, 14, 42);
+      arc(x+1, y+10, w-29, h-40, 10, 165);//mouth
+      fill(0, 0, 0);
+      ellipse(x-17, y+149, w-35, h-40);//left foot stub
+      ellipse(x+18, y+149, w-35, h-40);//right foot stub
+      fill(186, 160, 232);
+      rect(x-36, y+25, w-40, h+7);//left arm
+      rect(x+26, y+25, w-40, h+7);//right arm
+      fill(255, 0, 0);
+      triangle(x+2, y+48, x+15, y+26, x-16, y+26);//tie
+      fill(0, 0, 0);
+      ellipse(x-6, y-24, w-40, h-40);//hair
+      ellipse(x-14, y-21, w-40, h-40);
+      ellipse(x+2, y-24, w-40, h-40);
+      ellipse(x+11, y-23, w-40, h-40);
+      ellipse(x-21, y-15, w-40, h-40);
+      ellipse(x+19, y-18, w-40, h-40);
+
+      popMatrix();
+
+          //desk
+      fill(120, 99, 72);
+      rect(1, 398, 397, -83);
+
+          //desk decorations
+      pushMatrix();
+      fill(255, 255, 255);
+      translate(58,224);
+      rect(93, 98, 77, 69);
+      popMatrix();
+
+      //paper text
+      pushMatrix();
+      translate(286,467);
+      rotate(180);
+      textSize(8);
+      fill(0, 0, 0);
+      text("resume", 81, 90);
+      popMatrix();
+
+      //dialogue
+      pushMatrix();
+      translate(23, 322);
+      fill(69, 69, 69);
+      rect(0, 0, 359, 64);
+      popMatrix();
+
+      pushMatrix();
+      translate(29, 326);
+      fill(255, 255, 255);
+      rect(0, 0, 347, 55);
+      popMatrix();
+
+          //dialogue text
+      pushMatrix();
+      var f26 = createFont("Verdana", 20);
+      textFont(f26, 13);
+      translate(35,330);
+      fill(0, 0, 0);
+      text("MARTIN SPALDING:", 0, 0);
+      popMatrix();
+
+      pushMatrix();
+      textSize(14);
+      translate(38,347);
+      fill(0, 0, 0);
+      text("We'll start the interview immediately.", 0, 0);
+      popMatrix();
+      btn16.draw();
+
+      //fill space
+      pushMatrix();
+      fill(0, 0, 0);
+      rect(0, 398, 399, 155);
+      popMatrix();
+  };
+
+  var drawScene64 = function() {
+      currentScene = 6.4;
+      //wall
+      fill(218, 235, 232);
+      rect(0,0,398,398);
+
+      //door
+      pushMatrix();
+      translate(132,67);
+      fill(166, 131, 48);
+      rect(0, 0, 126, 184);
+      popMatrix();
+
+      //door
+      pushMatrix();
+      translate(132,67);
+      fill(120, 99, 72);
+      rect(0, 0, 126, 184);
+      popMatrix();
+
+      //door decoration
+      pushMatrix();
+      translate(150,79);
+      noFill();
+      rect(0, 0, 92, 71);
+      popMatrix();
+
+      pushMatrix();
+      translate(150,173);
+      noFill();
+      rect(0, 0, 92, 71);
+      popMatrix();
+
+      pushMatrix();
+      translate(246, 164);
+      noStroke();
+      fill(255, 242, 0);
+      ellipse(0, 0, 10, 10);
+      popMatrix();
+      //floor
+      pushMatrix();
+      translate(0,248);
+      noStroke();
+      fill(235, 235, 235);
+      rect(1, 0, 397, 90);
+      popMatrix();
+
+      //wall decoration (left side strip)
+      pushMatrix();
+      translate(1, 238);
+      noStroke();
+      fill(255, 255, 255);
+      rect(0, 0, 132, 13);
+      popMatrix();
+
+      pushMatrix();
+      rotate(102.1);
+      translate(67, -133);
+      noStroke();
+      fill(255, 255, 255);
+      rect(0, 0, 183, 13);
+      popMatrix();
+
+      //wall decoration (right side strip)
+      pushMatrix();
+      translate(258, 238);
+      noStroke();
+      fill(255, 255, 255);
+      rect(0, 0, 140, 13);
+      popMatrix();
+
+      pushMatrix();
+      rotate(1.57);
+      translate(56, -270);
+      noStroke();
+      fill(255, 255, 255);
+      rect(0, 0, 190, 13);
+      popMatrix();
+
+      pushMatrix();
+      rotate(169.64);
+      translate(120, 57);
+      noStroke();
+      fill(255, 255, 255);
+      rect(0, 0, 140, 13);
+      popMatrix();
+
+      //chair
+      pushMatrix();
+      translate(55,60);
+      fill(48, 48, 48);
+      rotate(-0.0);
+      beginShape();
+      curveVertex(-165,  72);
+      curveVertex(165,  267);
+      curveVertex(203,  132);
+      curveVertex(76,  127);
+      curveVertex(76, 259);
+      curveVertex(242, 206);
+      endShape();
+      popMatrix();
+
+      //character
+      pushMatrix();
+      translate(-69,-12);
+      noStroke();
+      scale(1.35);
+      var drawPerson = function() {
+      fill(224,172,105);//head
+      ellipse(193, 172, 60, 60);
+      fill(255, 255, 255);
+      ellipse(201, 165, 13, 13);//left eyeball
+      ellipse(184, 165, 13, 13);//right eyeball
+      fill(0, 0, 0);
+      ellipse(201, 165, 6, 6);//left pupil
+      ellipse(184, 165, 6, 6);//right pupil
+      fill(199, 14, 42);
+      arc(193, 182, 21, 10, 10, 165);//mouth
+      fill(97, 212, 155);
+      rect(154, 202, 11, 46);//left arm
+      rect(218, 202, 21, 46);//right arm
+      fill(97, 212, 155);
+      rect(165, 202, 60, 65);//torso
+      fill(224,172,105);
+      ellipse(160, 250, 13, 13);//left stub
+      ellipse(232, 250, 13, 13);//right stub
+      fill(230, 216, 216);
+      ellipse(194, 208, 8, 8);
+      ellipse(194, 220, 8, 8);
+      ellipse(194, 232, 8, 8);
+      ellipse(194, 244, 8, 8);
+      fill(0, 0, 0);
+      ellipse(218, 156, 15, 15);//hair
+      ellipse(168, 154, 15, 15);
+      ellipse(166, 164, 15, 15);
+      ellipse(163, 176, 15, 15);
+      ellipse(164, 185, 15, 15);
+      ellipse(223, 165, 15, 15);
+      ellipse(224, 175, 15, 15);
+      ellipse(224, 186, 15, 15);
+      ellipse(171, 149, 15, 15);
+      ellipse(213, 149, 15, 15);
+      ellipse(206, 144, 15, 15);
+      ellipse(198, 143, 15, 15);
+      ellipse(180, 146, 15, 15);
+      ellipse(204, 145, 15, 15);
+      ellipse(189, 144, 15, 15);
+      };
+      drawPerson();
+      popMatrix();
+
+      //desk
+      fill(120, 99, 72);
+      rect(1, 398, 397, -83);
+
+      //dialogue
+      pushMatrix();
+      translate(23, 322);
+      fill(69, 69, 69);
+      rect(0, 0, 359, 64);
+      popMatrix();
+
+      pushMatrix();
+      translate(29, 326);
+      fill(255, 255, 255);
+      rect(0, 0, 347, 55);
+      popMatrix();
+
+      //dialogue text
+      pushMatrix();
+      var f26 = createFont("Verdana", 20);
+      textFont(f26, 13);
+      translate(35,330);
+      fill(0, 0, 0);
+      text("SELENA ESTEVES:", 0, 0);
+      popMatrix();
+
+      pushMatrix();
+      textSize(14);
+      translate(38,346);
+      fill(0, 0, 0);
+      text("Do you need a copy of my resume?", 0, 0);
+      popMatrix();
+      btn17.draw();
+
+      //fill space
+      pushMatrix();
+      fill(0, 0, 0);
+      rect(0, 398, 399, 155);
+      popMatrix();
+  };
+
+  var drawScene65 = function() {
+    currentScene = 6.5;
+    //first certificate
+    var x = 16;
+    var y = 23;
+
+    fill(218, 235, 232);
+    rect(0, 0 ,398 ,398);
+
+    noStroke();
+    fill(0, 0, 0);
+    rect(x, y, 108, 73);
+
+    fill(247, 239, 239);
+    rect(x+11, y+10, 87, 54);
+
+    pushMatrix();
+    translate(43, 44);
+    var f11 = createFont("cursive", 20);
+    textFont(f11, 6);
+    fill(0, 0, 0);
+    rotate(0);
+    text("Certificate of Honor", 0, 0);
+    popMatrix();
+
+    pushMatrix();
+    translate(41, 53);
+    var f11 = createFont("cursive", 20);
+    textFont(f11, 8);
+    fill(0, 0, 0);
+    rotate(0);
+    text("Martin Spalding", 0, 0);
+    popMatrix();
+
+    pushMatrix();
+    translate(37, 63);
+    var f11 = createFont("cursive", 20);
+    textFont(f11, 4);
+    fill(0, 0, 0);
+    rotate(0);
+    text("this was written to honor martin for", 0, 0);
+    text("something not sure for what but it wa", 0, 4);
+    text("was for something and yeah", 0, 8);
+    popMatrix();
+
+    //second certificate
+    noStroke();
+    fill(0, 0, 0);
+    rect(272, 23, 108, 73);
+
+    fill(247, 239, 239);
+    rect(283, 33, 87, 54);
+
+    //certificate seal
+    pushMatrix();
+    translate(318, 48);
+    fill(235, 228, 87);
+    ellipse(10, 10, 10, 10);
+    popMatrix();
+
+    pushMatrix();
+    translate(83, 68);
+    fill(235, 228, 87);
+    ellipse(10, 10, 10, 10);
+    popMatrix();
+
+    //bookshelf
+    noStroke();
+    fill(0, 0, 0);
+    rect(158, 73, 82, 73);
+
+    fill(201, 123, 201);
+    rect(163, 83, 72, 54);
+
+    //books on bookshelf
+    pushMatrix();
+    stroke(0, 0, 0);
+    fill(173, 173, 173);
+    beginShape(QUAD_STRIP);
+    translate(33, -137);
+    vertex(130, 220);
+    vertex(130, 275);
+    vertex(150, 220);
+    vertex(150, 275);
+    vertex(165, 220);
+    vertex(165, 275);
+    vertex(182, 220);
+    vertex(182, 275);
+    vertex(202, 220);
+    vertex(202, 275);
+    endShape();
+    popMatrix();
+
+    pushMatrix();
+    translate(287, -70);
+    var f11 = createFont("cursive", 20);
+    textFont(f11, 9);
+    fill(0, 0, 0);
+    rotate(0);
+    text("District of Wizonia", 3, 113);
+    popMatrix();
+
+    pushMatrix();
+    translate(278, -56);
+    var f11 = createFont("cursive", 20);
+    textFont(f11, 4);
+    fill(0, 0, 0);
+    rotate(0);
+    text("Cwords and words and more wordsand word", 13, 124);
+    text("Cwords but in a different format so that it", 13, 129);
+    popMatrix();
+
+    pushMatrix();
+    var f3 = createFont("times", 20);
+    textFont(f3, 6);
+    translate(177,83);
+    fill(0, 0, 0);
+    rotate(190.1);
+    text("HOW TO SUCCEED", 0, 0);
+    text("THE GIVER", 12, -18);
+    text("THE INTERNET", 4, -33);
+    text("WILL ROBOTS", 7, -55);
+    text("TAKE OUR JOBS?", 4, -48);
+    popMatrix();
+
+      //chair
+      pushMatrix();
+      translate(57,56);
+      fill(48, 48, 48);
+      beginShape();
+      curveVertex(-165,  72);
+      curveVertex(165,  267);
+      curveVertex(203,  132);
+      curveVertex(76,  127);
+      curveVertex(76, 259);
+      curveVertex(242, 206);
+      endShape();
+      popMatrix();
+
+      //character
+      pushMatrix();
+      noStroke();
+      scale(1.5);
+      var currentScene;
+      var x = 130;
+      var y = 139;
+      var w = 50;
+      var h = 50;
+
+          fill(255, 224, 189);
+          ellipse(x, y, w, h);//head
+          fill(186, 160, 232);
+          rect(x-25, y+25, w, h+28);//torso
+          fill(161, 150, 161);
+          rect(x+10, y+103, w-35, h-10);//right leg
+          rect(x-25, y+103, w-35, h-10);//left leg
+          fill(255, 224, 189);
+          ellipse(x-30, y+87, w-40, h-40);//left stub
+          ellipse(x+32, y+87, w-40, h-40);//right stub
+          fill(255, 255, 255);
+          ellipse(x-10, y-4, w-40, h-40);//left eyeball
+          ellipse(x+10, y-4, w-40, h-40);//right eyeball
+          fill(0, 0, 0);
+          ellipse(x-10, y-4, w-47, w-47);//left pupil
+      ellipse(x+10, y-4, w-47, h-47);//right pupil
+      fill(199, 14, 42);
+      arc(x+1, y+10, w-29, h-40, 10, 165);//mouth
+      fill(0, 0, 0);
+      ellipse(x-17, y+149, w-35, h-40);//left foot stub
+      ellipse(x+18, y+149, w-35, h-40);//right foot stub
+      fill(186, 160, 232);
+      rect(x-36, y+25, w-40, h+7);//left arm
+      rect(x+26, y+25, w-40, h+7);//right arm
+      fill(255, 0, 0);
+      triangle(x+2, y+48, x+15, y+26, x-16, y+26);//tie
+      fill(0, 0, 0);
+      ellipse(x-6, y-24, w-40, h-40);//hair
+      ellipse(x-14, y-21, w-40, h-40);
+      ellipse(x+2, y-24, w-40, h-40);
+      ellipse(x+11, y-23, w-40, h-40);
+      ellipse(x-21, y-15, w-40, h-40);
+      ellipse(x+19, y-18, w-40, h-40);
+
+      popMatrix();
+
+          //desk
+      fill(120, 99, 72);
+      rect(1, 398, 397, -83);
+
+          //desk decorations
+      pushMatrix();
+      fill(255, 255, 255);
+      translate(58,224);
+      rect(93, 98, 77, 69);
+      popMatrix();
+
+      //paper text
+      pushMatrix();
+      translate(286,467);
+      rotate(180);
+      textSize(8);
+      fill(0, 0, 0);
+      text("resume", 81, 90);
+      popMatrix();
+
+      //dialogue
+      pushMatrix();
+      translate(23, 322);
+      fill(69, 69, 69);
+      rect(0, 0, 359, 64);
+      popMatrix();
+
+      pushMatrix();
+      translate(29, 326);
+      fill(255, 255, 255);
+      rect(0, 0, 347, 55);
+      popMatrix();
+
+          //dialogue text
+      pushMatrix();
+      var f26 = createFont("Verdana", 20);
+      textFont(f26, 13);
+      translate(35,330);
+      fill(0, 0, 0);
+      text("MARTIN SPALDING:", 0, 0);
+      popMatrix();
+
+      pushMatrix();
+      textSize(14);
+      translate(35,346);
+      fill(0, 0, 0);
+      text("No, I have your file with all your work and I am ", 0, 0);
+      text("very impressed. You are a credit to your race.", 0, 13);
+      popMatrix();
+      btn18.draw();
+
+      //fill space
+      pushMatrix();
+      fill(0, 0, 0);
+      rect(0, 398, 399, 155);
+      popMatrix();
+  };
+
+  //DECISION 1 buttons 1-3
+  var drawScene66 = function() {
+      currentScene = 6.6;
+      //button setup
+
+      //buttons for options
+      var drawButton = function(btn) {
+      fill(243, 247, 247);
+      rect(btn.x, btn.y, btn.width, btn.height, 5);
+      fill(0, 0, 0);
+      textSize(19);
+      textAlign(LEFT, TOP);
+      text(" ", btn.x+10, btn.y+btn.height/4);
+      };
+
+      //wall
+      fill(218, 235, 232);
+      rect(0,0,398,398);
+
+      //door
+      pushMatrix();
+      translate(132,67);
+      fill(166, 131, 48);
+      rect(0, 0, 126, 184);
+      popMatrix();
+
+      //door
+      pushMatrix();
+      translate(132,67);
+      fill(120, 99, 72);
+      rect(0, 0, 126, 184);
+      popMatrix();
+
+      //door decoration
+      pushMatrix();
+      translate(150,79);
+      noFill();
+      rect(0, 0, 92, 71);
+      popMatrix();
+
+      pushMatrix();
+      translate(150,173);
+      noFill();
+      rect(0, 0, 92, 71);
+      popMatrix();
+
+      pushMatrix();
+      translate(246, 164);
+      noStroke();
+      fill(255, 242, 0);
+      ellipse(0, 0, 10, 10);
+      popMatrix();
+
+      //floor
+      pushMatrix();
+      translate(0,248);
+      noStroke();
+      fill(235, 235, 235);
+      rect(1, 0, 397, 90);
+      popMatrix();
+
+      //wall decoration (left side strip)
+      pushMatrix();
+      translate(1, 238);
+      noStroke();
+      fill(255, 255, 255);
+      rect(0, 0, 132, 13);
+      popMatrix();
+
+      pushMatrix();
+      rotate(102.1);
+      translate(67, -133);
+      noStroke();
+      fill(255, 255, 255);
+      rect(0, 0, 183, 13);
+      popMatrix();
+
+      //wall decoration (right side strip)
+      pushMatrix();
+      translate(258, 238);
+      noStroke();
+      fill(255, 255, 255);
+      rect(0, 0, 140, 13);
+      popMatrix();
+
+      pushMatrix();
+      rotate(1.57);
+      translate(56, -270);
+      noStroke();
+      fill(255, 255, 255);
+      rect(0, 0, 190, 13);
+      popMatrix();
+
+      pushMatrix();
+      rotate(169.64);
+      translate(120, 57);
+      noStroke();
+      fill(255, 255, 255);
+      rect(0, 0, 140, 13);
+      popMatrix();
+
+      //chair
+      pushMatrix();
+      translate(55,60);
+      fill(48, 48, 48);
+      rotate(-0.0);
+      beginShape();
+      curveVertex(-165,  72);
+      curveVertex(165,  267);
+      curveVertex(203,  132);
+      curveVertex(76,  127);
+      curveVertex(76, 259);
+      curveVertex(242, 206);
+      endShape();
+      popMatrix();
+
+      //character
+      pushMatrix();
+      translate(-69,-12);
+      noStroke();
+      scale(1.35);
+      var drawPerson = function() {
+        fill(224,172,105);//head
+        ellipse(193, 172, 60, 60);
+        fill(255, 255, 255);
+        ellipse(201, 165, 13, 13);//left eyeball
+        ellipse(184, 165, 13, 13);//right eyeball
+        fill(0, 0, 0);
+        ellipse(201, 165, 6, 6);//left pupil
+        ellipse(184, 165, 6, 6);//right pupil
+        fill(199, 14, 42);
+        arc(193, 182, 21, 10, 10, 165);//mouth
+        fill(97, 212, 155);
+        rect(154, 202, 11, 46);//left arm
+        rect(218, 202, 21, 46);//right arm
+        fill(97, 212, 155);
+        rect(165, 202, 60, 65);//torso
+        fill(224,172,105);
+        ellipse(160, 250, 13, 13);//left stub
+        ellipse(232, 250, 13, 13);//right stub
+        fill(230, 216, 216);
+        ellipse(194, 208, 8, 8);
+        ellipse(194, 220, 8, 8);
+        ellipse(194, 232, 8, 8);
+        ellipse(194, 244, 8, 8);
+        fill(0, 0, 0);
+        ellipse(218, 156, 15, 15);//hair
+        ellipse(168, 154, 15, 15);
+        ellipse(166, 164, 15, 15);
+        ellipse(163, 176, 15, 15);
+        ellipse(164, 185, 15, 15);
+        ellipse(223, 165, 15, 15);
+        ellipse(224, 175, 15, 15);
+        ellipse(224, 186, 15, 15);
+        ellipse(171, 149, 15, 15);
+        ellipse(213, 149, 15, 15);
+        ellipse(206, 144, 15, 15);
+        ellipse(198, 143, 15, 15);
+        ellipse(180, 146, 15, 15);
+        ellipse(204, 145, 15, 15);
+        ellipse(189, 144, 15, 15);
+      };
+      drawPerson();
+      popMatrix();
+
+      //desk
+      fill(120, 99, 72);
+      rect(1, 398, 397, -83);
+
+      //dialogue
+      pushMatrix();
+      translate(23, 322);
+      fill(69, 69, 69);
+      rect(0, 0, 359, 64);
+      popMatrix();
+
+      pushMatrix();
+      translate(29, 326);
+      fill(255, 255, 255);
+      rect(0, 0, 347, 55);
+      popMatrix();
+
+      //dialogue text
+      pushMatrix();
+      var f26 = createFont("Verdana", 20);
+      textFont(f26, 13);
+      translate(35,330);
+      fill(0, 0, 0);
+      text("SELENA ESTEVES:", 0, 0);
+      popMatrix();
+
+      pushMatrix();
+      textSize(14);
+      translate(38,361);
+      fill(0, 0, 0);
+      text("  ", 0, 0);
+      popMatrix();
+
+      //option box
+      pushMatrix();
+      translate(88, 75);
+      fill(69, 69, 69);
+      rect(0, 0, 209, 224);
+      popMatrix();
+
+      pushMatrix();
+      translate(91, 79);
+      fill(220, 223, 224);
+      rect(0, 0, 203, 217);
+      popMatrix();
+
+      //shows the buttons
+      pushMatrix();
+      drawButton(btn1);
+      drawButton(btn2);
+      drawButton(btn3);
+      popMatrix();
+
+      //text for options
+      pushMatrix();
+      var f26 = createFont("Verdana", 20);
+      textFont(f26, 15);
+      translate(142,101);
+      fill(0, 0, 0);
+      text("sit down and", 0, 0);
+      text("don't respond", -2, 16);
+      popMatrix();
+
+      pushMatrix();
+      var f26 = createFont("Verdana", 20);
+      textFont(f26, 15);
+      translate(122,163);
+      fill(0, 0, 0);
+      text("what do you mean", 0, 0);
+      text("by 'credit to my", 7, 14);
+      text("race?'", 49, 28);
+      popMatrix();
+
+      pushMatrix();
+      var f26 = createFont("Verdana", 20);
+      textFont(f26, 15);
+      translate(140,237);
+      fill(0, 0, 0);
+      text("Ha ha, thanks", 0, 0);
+      text("..I guess", 14, 16);
+      popMatrix();
+
+      //fill space
+      pushMatrix();
+      fill(0, 0, 0);
+      rect(0, 398, 399, 155);
+      popMatrix();
+
+  };
+
+  var drawScene67 = function() {
+      currentScene = 6.7;
+      //first certificate
+      var x = 16;
+      var y = 23;
+
+      fill(218, 235, 232);
+      rect(0, 0 ,398 ,398);
+
+      noStroke();
+      fill(0, 0, 0);
+      rect(x, y, 108, 73);
+
+      fill(247, 239, 239);
+      rect(x+11, y+10, 87, 54);
+
+      pushMatrix();
+      translate(43, 44);
+      var f11 = createFont("cursive", 20);
+      textFont(f11, 6);
+      fill(0, 0, 0);
+      rotate(0);
+      text("Certificate of Honor", 0, 0);
+      popMatrix();
+
+      pushMatrix();
+      translate(41, 53);
+      var f11 = createFont("cursive", 20);
+      textFont(f11, 8);
+      fill(0, 0, 0);
+      rotate(0);
+      text("Martin Spalding", 0, 0);
+      popMatrix();
+
+      pushMatrix();
+      translate(37, 63);
+      var f11 = createFont("cursive", 20);
+      textFont(f11, 4);
+      fill(0, 0, 0);
+      rotate(0);
+      text("this was written to honor martin for", 0, 0);
+      text("something not sure for what but it wa", 0, 4);
+      text("was for something and yeah", 0, 8);
+      popMatrix();
+
+      //second certificate
+      noStroke();
+      fill(0, 0, 0);
+      rect(272, 23, 108, 73);
+
+      fill(247, 239, 239);
+      rect(283, 33, 87, 54);
+
+      //certificate seal
+      pushMatrix();
+      translate(318, 48);
+      fill(235, 228, 87);
+      ellipse(10, 10, 10, 10);
+      popMatrix();
+
+      pushMatrix();
+      translate(83, 68);
+      fill(235, 228, 87);
+      ellipse(10, 10, 10, 10);
+      popMatrix();
+
+      //bookshelf
+      noStroke();
+      fill(0, 0, 0);
+      rect(158, 73, 82, 73);
+
+      fill(201, 123, 201);
+      rect(163, 83, 72, 54);
+
+      //books on bookshelf
+      pushMatrix();
+      stroke(0, 0, 0);
+      fill(173, 173, 173);
+      beginShape(QUAD_STRIP);
+      translate(33, -137);
+      vertex(130, 220);
+      vertex(130, 275);
+      vertex(150, 220);
+      vertex(150, 275);
+      vertex(165, 220);
+      vertex(165, 275);
+      vertex(182, 220);
+      vertex(182, 275);
+      vertex(202, 220);
+      vertex(202, 275);
+      endShape();
+      popMatrix();
+
+      pushMatrix();
+      translate(287, -70);
+      var f11 = createFont("cursive", 20);
+      textFont(f11, 9);
+      fill(0, 0, 0);
+      rotate(0);
+      text("District of Wizonia", 3, 113);
+      popMatrix();
+
+      pushMatrix();
+      translate(278, -56);
+      var f11 = createFont("cursive", 20);
+      textFont(f11, 4);
+      fill(0, 0, 0);
+      rotate(0);
+      text("Cwords and words and more wordsand word", 13, 124);
+      text("Cwords but in a different format so that it", 13, 129);
+      popMatrix();
+
+      pushMatrix();
+      var f3 = createFont("times", 20);
+      textFont(f3, 6);
+      translate(177,83);
+      fill(0, 0, 0);
+      rotate(190.1);
+      text("HOW TO SUCCEED", 0, 0);
+      text("THE GIVER", 12, -18);
+      text("THE INTERNET", 4, -33);
+      text("WILL ROBOTS", 7, -55);
+      text("TAKE OUR JOBS?", 4, -48);
+      popMatrix();
+
+      //chair
+      pushMatrix();
+      translate(57,56);
+      fill(48, 48, 48);
+      beginShape();
+      curveVertex(-165,  72);
+      curveVertex(165,  267);
+      curveVertex(203,  132);
+      curveVertex(76,  127);
+      curveVertex(76, 259);
+      curveVertex(242, 206);
+      endShape();
+      popMatrix();
+
+      //character
+      pushMatrix();
+      noStroke();
+      scale(1.5);
+      var currentScene;
+      var x = 130;
+      var y = 139;
+      var w = 50;
+      var h = 50;
+
+          fill(255, 224, 189);
+          ellipse(x, y, w, h);//head
+          fill(186, 160, 232);
+          rect(x-25, y+25, w, h+28);//torso
+          fill(161, 150, 161);
+          rect(x+10, y+103, w-35, h-10);//right leg
+          rect(x-25, y+103, w-35, h-10);//left leg
+          fill(255, 224, 189);
+          ellipse(x-30, y+87, w-40, h-40);//left stub
+          ellipse(x+32, y+87, w-40, h-40);//right stub
+          fill(255, 255, 255);
+          ellipse(x-10, y-4, w-40, h-40);//left eyeball
+          ellipse(x+10, y-4, w-40, h-40);//right eyeball
+          fill(0, 0, 0);
+          ellipse(x-10, y-4, w-47, w-47);//left pupil
+      ellipse(x+10, y-4, w-47, h-47);//right pupil
+      fill(199, 14, 42);
+      arc(x+1, y+10, w-29, h-40, 10, 165);//mouth
+      fill(0, 0, 0);
+      ellipse(x-17, y+149, w-35, h-40);//left foot stub
+      ellipse(x+18, y+149, w-35, h-40);//right foot stub
+      fill(186, 160, 232);
+      rect(x-36, y+25, w-40, h+7);//left arm
+      rect(x+26, y+25, w-40, h+7);//right arm
+      fill(255, 0, 0);
+      triangle(x+2, y+48, x+15, y+26, x-16, y+26);//tie
+      fill(0, 0, 0);
+      ellipse(x-6, y-24, w-40, h-40);//hair
+      ellipse(x-14, y-21, w-40, h-40);
+      ellipse(x+2, y-24, w-40, h-40);
+      ellipse(x+11, y-23, w-40, h-40);
+      ellipse(x-21, y-15, w-40, h-40);
+      ellipse(x+19, y-18, w-40, h-40);
+
+      popMatrix();
+
+          //desk
+      fill(120, 99, 72);
+      rect(1, 398, 397, -83);
+
+          //desk decorations
+      pushMatrix();
+      fill(255, 255, 255);
+      translate(58,224);
+      rect(93, 98, 77, 69);
+      popMatrix();
+
+      //paper text
+      pushMatrix();
+      translate(286,467);
+      rotate(180);
+      textSize(8);
+      fill(0, 0, 0);
+      text("resume", 81, 90);
+      popMatrix();
+
+      //dialogue
+      pushMatrix();
+      translate(23, 322);
+      fill(69, 69, 69);
+      rect(0, 0, 359, 64);
+      popMatrix();
+
+      pushMatrix();
+      translate(29, 326);
+      fill(255, 255, 255);
+      rect(0, 0, 347, 55);
+      popMatrix();
+
+          //dialogue text
+      pushMatrix();
+      var f26 = createFont("Verdana", 20);
+      textFont(f26, 13);
+      translate(35,328);
+      fill(0, 0, 0);
+      text("MARTIN SPALDING:", 0, -1);
+      popMatrix();
+
+      pushMatrix();
+      textSize(14);
+      translate(36,348);
+      fill(0, 0, 0);
+      text("Please take your seat. Now, what experiences", 0, -7);
+      text("can you bring to this company and this role ", 0, 5);
+      text("that you may possibly take on?", 0, 16);
+      popMatrix();
+      btn19.draw();
+
+      //fill space
+      pushMatrix();
+      fill(0, 0, 0);
+      rect(0, 398, 399, 155);
+      popMatrix();
+  };
+
+  var drawScene68 = function() {
+      currentScene = 6.8;
+      //wall
+      fill(218, 235, 232);
+      rect(0,0,398,398);
+
+      //door
+      pushMatrix();
+      translate(132,67);
+      fill(166, 131, 48);
+      rect(0, 0, 126, 184);
+      popMatrix();
+
+      //door
+      pushMatrix();
+      translate(132,67);
+      fill(120, 99, 72);
+      rect(0, 0, 126, 184);
+      popMatrix();
+
+      //door decoration
+      pushMatrix();
+      translate(150,79);
+      noFill();
+      rect(0, 0, 92, 71);
+      popMatrix();
+
+      pushMatrix();
+      translate(150,173);
+      noFill();
+      rect(0, 0, 92, 71);
+      popMatrix();
+
+      pushMatrix();
+      translate(246, 164);
+      noStroke();
+      fill(255, 242, 0);
+      ellipse(0, 0, 10, 10);
+      popMatrix();
+      //floor
+      pushMatrix();
+      translate(0,248);
+      noStroke();
+      fill(235, 235, 235);
+      rect(1, 0, 397, 90);
+      popMatrix();
+
+      //wall decoration (left side strip)
+      pushMatrix();
+      translate(1, 238);
+      noStroke();
+      fill(255, 255, 255);
+      rect(0, 0, 132, 13);
+      popMatrix();
+
+      pushMatrix();
+      rotate(102.1);
+      translate(67, -133);
+      noStroke();
+      fill(255, 255, 255);
+      rect(0, 0, 183, 13);
+      popMatrix();
+
+      //wall decoration (right side strip)
+      pushMatrix();
+      translate(258, 238);
+      noStroke();
+      fill(255, 255, 255);
+      rect(0, 0, 140, 13);
+      popMatrix();
+
+      pushMatrix();
+      rotate(1.57);
+      translate(56, -270);
+      noStroke();
+      fill(255, 255, 255);
+      rect(0, 0, 190, 13);
+      popMatrix();
+
+      pushMatrix();
+      rotate(169.64);
+      translate(120, 57);
+      noStroke();
+      fill(255, 255, 255);
+      rect(0, 0, 140, 13);
+      popMatrix();
+
+      //chair
+      pushMatrix();
+      translate(55,60);
+      fill(48, 48, 48);
+      rotate(-0.0);
+      beginShape();
+      curveVertex(-165,  72);
+      curveVertex(165,  267);
+      curveVertex(203,  132);
+      curveVertex(76,  127);
+      curveVertex(76, 259);
+      curveVertex(242, 206);
+      endShape();
+      popMatrix();
+
+      //character
+      pushMatrix();
+      translate(-69,-12);
+      noStroke();
+      scale(1.35);
+      var drawPerson = function() {
+      fill(224,172,105);//head
+      ellipse(193, 172, 60, 60);
+      fill(255, 255, 255);
+      ellipse(201, 165, 13, 13);//left eyeball
+      ellipse(184, 165, 13, 13);//right eyeball
+      fill(0, 0, 0);
+      ellipse(201, 165, 6, 6);//left pupil
+      ellipse(184, 165, 6, 6);//right pupil
+      fill(199, 14, 42);
+      arc(193, 182, 21, 10, 10, 165);//mouth
+      fill(97, 212, 155);
+      rect(154, 202, 11, 46);//left arm
+      rect(218, 202, 21, 46);//right arm
+      fill(97, 212, 155);
+      rect(165, 202, 60, 65);//torso
+      fill(224,172,105);
+      ellipse(160, 250, 13, 13);//left stub
+      ellipse(232, 250, 13, 13);//right stub
+      fill(230, 216, 216);
+      ellipse(194, 208, 8, 8);
+      ellipse(194, 220, 8, 8);
+      ellipse(194, 232, 8, 8);
+      ellipse(194, 244, 8, 8);
+      fill(0, 0, 0);
+      ellipse(218, 156, 15, 15);//hair
+      ellipse(168, 154, 15, 15);
+      ellipse(166, 164, 15, 15);
+      ellipse(163, 176, 15, 15);
+      ellipse(164, 185, 15, 15);
+      ellipse(223, 165, 15, 15);
+      ellipse(224, 175, 15, 15);
+      ellipse(224, 186, 15, 15);
+      ellipse(171, 149, 15, 15);
+      ellipse(213, 149, 15, 15);
+      ellipse(206, 144, 15, 15);
+      ellipse(198, 143, 15, 15);
+      ellipse(180, 146, 15, 15);
+      ellipse(204, 145, 15, 15);
+      ellipse(189, 144, 15, 15);
+      };
+      drawPerson();
+      popMatrix();
+
+      //desk
+      fill(120, 99, 72);
+      rect(1, 398, 397, -83);
+
+      //dialogue
+      pushMatrix();
+      translate(23, 322);
+      fill(69, 69, 69);
+      rect(0, 0, 359, 64);
+      popMatrix();
+
+      pushMatrix();
+      translate(29, 326);
+      fill(255, 255, 255);
+      rect(0, 0, 347, 55);
+      popMatrix();
+
+      //dialogue text
+      pushMatrix();
+      var f26 = createFont("Verdana", 20);
+      textFont(f26, 13);
+      translate(35,330);
+      fill(0, 0, 0);
+      text("SELENA ESTEVES:", 0, -2);
+      popMatrix();
+
+      pushMatrix();
+      textSize(14);
+      translate(36,347);
+      fill(0, 0, 0);
+      text("Well, I have worked at many other places and", 0, -7);
+      text("I can say that this job really grabbed my", 0, 5);
+      text("attention based on the description that I read.", 0, 17);
+      popMatrix();
+      btn20.draw();
+
+      //fill space
+      pushMatrix();
+      fill(0, 0, 0);
+      rect(0, 398, 399, 155);
+      popMatrix();
+  };
+
+  var drawScene69 = function() {
+      currentScene = 6.9;
+      //first certificate
+      var x = 16;
+      var y = 23;
+
+      fill(218, 235, 232);
+      rect(0, 0 ,398 ,398);
+
+      noStroke();
+      fill(0, 0, 0);
+      rect(x, y, 108, 73);
+
+      fill(247, 239, 239);
+      rect(x+11, y+10, 87, 54);
+
+      pushMatrix();
+      translate(43, 44);
+      var f11 = createFont("cursive", 20);
+      textFont(f11, 6);
+      fill(0, 0, 0);
+      rotate(0);
+      text("Certificate of Honor", 0, 0);
+      popMatrix();
+
+      pushMatrix();
+      translate(41, 53);
+      var f11 = createFont("cursive", 20);
+      textFont(f11, 8);
+      fill(0, 0, 0);
+      rotate(0);
+      text("Martin Spalding", 0, 0);
+      popMatrix();
+
+      pushMatrix();
+      translate(37, 63);
+      var f11 = createFont("cursive", 20);
+      textFont(f11, 4);
+      fill(0, 0, 0);
+      rotate(0);
+      text("this was written to honor martin for", 0, 0);
+      text("something not sure for what but it wa", 0, 4);
+      text("was for something and yeah", 0, 8);
+      popMatrix();
+
+      //second certificate
+      noStroke();
+      fill(0, 0, 0);
+      rect(272, 23, 108, 73);
+
+      fill(247, 239, 239);
+      rect(283, 33, 87, 54);
+
+      //certificate seal
+      pushMatrix();
+      translate(318, 48);
+      fill(235, 228, 87);
+      ellipse(10, 10, 10, 10);
+      popMatrix();
+
+      pushMatrix();
+      translate(83, 68);
+      fill(235, 228, 87);
+      ellipse(10, 10, 10, 10);
+      popMatrix();
+
+      //bookshelf
+      noStroke();
+      fill(0, 0, 0);
+      rect(158, 73, 82, 73);
+
+      fill(201, 123, 201);
+      rect(163, 83, 72, 54);
+
+      //books on bookshelf
+      pushMatrix();
+      stroke(0, 0, 0);
+      fill(173, 173, 173);
+      beginShape(QUAD_STRIP);
+      translate(33, -137);
+      vertex(130, 220);
+      vertex(130, 275);
+      vertex(150, 220);
+      vertex(150, 275);
+      vertex(165, 220);
+      vertex(165, 275);
+      vertex(182, 220);
+      vertex(182, 275);
+      vertex(202, 220);
+      vertex(202, 275);
+      endShape();
+      popMatrix();
+
+      pushMatrix();
+      translate(287, -70);
+      var f11 = createFont("cursive", 20);
+      textFont(f11, 9);
+      fill(0, 0, 0);
+      rotate(0);
+      text("District of Wizonia", 3, 113);
+      popMatrix();
+
+      pushMatrix();
+      translate(278, -56);
+      var f11 = createFont("cursive", 20);
+      textFont(f11, 4);
+      fill(0, 0, 0);
+      rotate(0);
+      text("Cwords and words and more wordsand word", 13, 124);
+      text("Cwords but in a different format so that it", 13, 129);
+      popMatrix();
+
+      pushMatrix();
+      var f3 = createFont("times", 20);
+      textFont(f3, 6);
+      translate(177,83);
+      fill(0, 0, 0);
+      rotate(190.1);
+      text("HOW TO SUCCEED", 0, 0);
+      text("THE GIVER", 12, -18);
+      text("THE INTERNET", 4, -33);
+      text("WILL ROBOTS", 7, -55);
+      text("TAKE OUR JOBS?", 4, -48);
+      popMatrix();
+
+      //chair
+      pushMatrix();
+      translate(57,56);
+      fill(48, 48, 48);
+      beginShape();
+      curveVertex(-165,  72);
+      curveVertex(165,  267);
+      curveVertex(203,  132);
+      curveVertex(76,  127);
+      curveVertex(76, 259);
+      curveVertex(242, 206);
+      endShape();
+      popMatrix();
+
+      //character
+      pushMatrix();
+      noStroke();
+      scale(1.5);
+      var currentScene;
+      var x = 130;
+      var y = 139;
+      var w = 50;
+      var h = 50;
+
+          fill(255, 224, 189);
+          ellipse(x, y, w, h);//head
+          fill(186, 160, 232);
+          rect(x-25, y+25, w, h+28);//torso
+          fill(161, 150, 161);
+          rect(x+10, y+103, w-35, h-10);//right leg
+          rect(x-25, y+103, w-35, h-10);//left leg
+          fill(255, 224, 189);
+          ellipse(x-30, y+87, w-40, h-40);//left stub
+          ellipse(x+32, y+87, w-40, h-40);//right stub
+          fill(255, 255, 255);
+          ellipse(x-10, y-4, w-40, h-40);//left eyeball
+          ellipse(x+10, y-4, w-40, h-40);//right eyeball
+          fill(0, 0, 0);
+          ellipse(x-10, y-4, w-47, w-47);//left pupil
+      ellipse(x+10, y-4, w-47, h-47);//right pupil
+      fill(199, 14, 42);
+      arc(x+1, y+10, w-29, h-40, 10, 165);//mouth
+      fill(0, 0, 0);
+      ellipse(x-17, y+149, w-35, h-40);//left foot stub
+      ellipse(x+18, y+149, w-35, h-40);//right foot stub
+      fill(186, 160, 232);
+      rect(x-36, y+25, w-40, h+7);//left arm
+      rect(x+26, y+25, w-40, h+7);//right arm
+      fill(255, 0, 0);
+      triangle(x+2, y+48, x+15, y+26, x-16, y+26);//tie
+      fill(0, 0, 0);
+      ellipse(x-6, y-24, w-40, h-40);//hair
+      ellipse(x-14, y-21, w-40, h-40);
+      ellipse(x+2, y-24, w-40, h-40);
+      ellipse(x+11, y-23, w-40, h-40);
+      ellipse(x-21, y-15, w-40, h-40);
+      ellipse(x+19, y-18, w-40, h-40);
+
+      popMatrix();
+
+          //desk
+      fill(120, 99, 72);
+      rect(1, 398, 397, -83);
+
+          //desk decorations
+      pushMatrix();
+      fill(255, 255, 255);
+      translate(58,224);
+      rect(93, 98, 77, 69);
+      popMatrix();
+
+      //paper text
+      pushMatrix();
+      translate(286,467);
+      rotate(180);
+      textSize(8);
+      fill(0, 0, 0);
+      text("resume", 81, 90);
+      popMatrix();
+
+      //dialogue
+      pushMatrix();
+      translate(23, 322);
+      fill(69, 69, 69);
+      rect(0, 0, 359, 64);
+      popMatrix();
+
+      pushMatrix();
+      translate(29, 326);
+      fill(255, 255, 255);
+      rect(0, 0, 347, 55);
+      popMatrix();
+
+          //dialogue text
+      pushMatrix();
+      var f26 = createFont("Verdana", 20);
+      textFont(f26, 13);
+      translate(35,330);
+      fill(0, 0, 0);
+      text("MARTIN SPALDING:", 0, -4);
+      popMatrix();
+
+      pushMatrix();
+      textSize(14);
+      translate(36,349);
+      fill(0, 0, 0);
+      text("I believe that everyone can succeed in this", 0, -10);
+      text("society, if they work hard enough and it's good", 0, 2);
+      text("to see that in you, especially for your people.", 0, 15);
+      popMatrix();
+      btn21.draw();
+  };
+
+  //DECISION 2 buttons 4-6
+  var drawScene70 = function() {
+      currentScene = 70;
+      //button setup
+
+      //buttons for options
+      var drawButton = function(btn) {
+      fill(243, 247, 247);
+      rect(btn.x, btn.y, btn.width, btn.height, 5);
+      fill(0, 0, 0);
+      textSize(19);
+      textAlign(LEFT, TOP);
+      text(" ", btn.x+10, btn.y+btn.height/4);
+      };
+
+      //wall
+      fill(218, 235, 232);
+      rect(0,0,398,398);
+
+      //door
+      pushMatrix();
+      translate(132,67);
+      fill(166, 131, 48);
+      rect(0, 0, 126, 184);
+      popMatrix();
+
+      //door
+      pushMatrix();
+      translate(132,67);
+      fill(120, 99, 72);
+      rect(0, 0, 126, 184);
+      popMatrix();
+
+      //door decoration
+      pushMatrix();
+      translate(150,79);
+      noFill();
+      rect(0, 0, 92, 71);
+      popMatrix();
+
+      pushMatrix();
+      translate(150,173);
+      noFill();
+      rect(0, 0, 92, 71);
+      popMatrix();
+
+      pushMatrix();
+      translate(246, 164);
+      noStroke();
+      fill(255, 242, 0);
+      ellipse(0, 0, 10, 10);
+      popMatrix();
+
+      //floor
+      pushMatrix();
+      translate(0,248);
+      noStroke();
+      fill(235, 235, 235);
+      rect(1, 0, 397, 90);
+      popMatrix();
+
+      //wall decoration (left side strip)
+      pushMatrix();
+      translate(1, 238);
+      noStroke();
+      fill(255, 255, 255);
+      rect(0, 0, 132, 13);
+      popMatrix();
+
+      pushMatrix();
+      rotate(102.1);
+      translate(67, -133);
+      noStroke();
+      fill(255, 255, 255);
+      rect(0, 0, 183, 13);
+      popMatrix();
+
+      //wall decoration (right side strip)
+      pushMatrix();
+      translate(258, 238);
+      noStroke();
+      fill(255, 255, 255);
+      rect(0, 0, 140, 13);
+      popMatrix();
+
+      pushMatrix();
+      rotate(1.57);
+      translate(56, -270);
+      noStroke();
+      fill(255, 255, 255);
+      rect(0, 0, 190, 13);
+      popMatrix();
+
+      pushMatrix();
+      rotate(169.64);
+      translate(120, 57);
+      noStroke();
+      fill(255, 255, 255);
+      rect(0, 0, 140, 13);
+      popMatrix();
+
+      //chair
+      pushMatrix();
+      translate(55,60);
+      fill(48, 48, 48);
+      rotate(-0.0);
+      beginShape();
+      curveVertex(-165,  72);
+      curveVertex(165,  267);
+      curveVertex(203,  132);
+      curveVertex(76,  127);
+      curveVertex(76, 259);
+      curveVertex(242, 206);
+      endShape();
+      popMatrix();
+
+      //character
+      pushMatrix();
+      translate(-69,-12);
+      noStroke();
+      scale(1.35);
+      var drawPerson = function() {
+        fill(224,172,105);//head
+        ellipse(193, 172, 60, 60);
+        fill(255, 255, 255);
+        ellipse(201, 165, 13, 13);//left eyeball
+        ellipse(184, 165, 13, 13);//right eyeball
+        fill(0, 0, 0);
+        ellipse(201, 165, 6, 6);//left pupil
+        ellipse(184, 165, 6, 6);//right pupil
+        fill(199, 14, 42);
+        arc(193, 182, 21, 10, 10, 165);//mouth
+        fill(97, 212, 155);
+        rect(154, 202, 11, 46);//left arm
+        rect(218, 202, 21, 46);//right arm
+        fill(97, 212, 155);
+        rect(165, 202, 60, 65);//torso
+        fill(224,172,105);
+        ellipse(160, 250, 13, 13);//left stub
+        ellipse(232, 250, 13, 13);//right stub
+        fill(230, 216, 216);
+        ellipse(194, 208, 8, 8);
+        ellipse(194, 220, 8, 8);
+        ellipse(194, 232, 8, 8);
+        ellipse(194, 244, 8, 8);
+        fill(0, 0, 0);
+        ellipse(218, 156, 15, 15);//hair
+        ellipse(168, 154, 15, 15);
+        ellipse(166, 164, 15, 15);
+        ellipse(163, 176, 15, 15);
+        ellipse(164, 185, 15, 15);
+        ellipse(223, 165, 15, 15);
+        ellipse(224, 175, 15, 15);
+        ellipse(224, 186, 15, 15);
+        ellipse(171, 149, 15, 15);
+        ellipse(213, 149, 15, 15);
+        ellipse(206, 144, 15, 15);
+        ellipse(198, 143, 15, 15);
+        ellipse(180, 146, 15, 15);
+        ellipse(204, 145, 15, 15);
+        ellipse(189, 144, 15, 15);
+      };
+      drawPerson();
+      popMatrix();
+
+      //desk
+      fill(120, 99, 72);
+      rect(1, 398, 397, -83);
+
+      //dialogue
+      pushMatrix();
+      translate(23, 322);
+      fill(69, 69, 69);
+      rect(0, 0, 359, 64);
+      popMatrix();
+
+      pushMatrix();
+      translate(29, 326);
+      fill(255, 255, 255);
+      rect(0, 0, 347, 55);
+      popMatrix();
+
+      //dialogue text
+      pushMatrix();
+      var f26 = createFont("Verdana", 20);
+      textFont(f26, 13);
+      translate(35,330);
+      fill(0, 0, 0);
+      text("SELENA ESTEVES:", 0, 0);
+      popMatrix();
+
+      pushMatrix();
+      textSize(14);
+      translate(38,361);
+      fill(0, 0, 0);
+      text("", 0, 0);
+      popMatrix();
+
+      //option box
+      pushMatrix();
+      translate(88, 75);
+      fill(69, 69, 69);
+      rect(0, 0, 209, 224);
+      popMatrix();
+
+      pushMatrix();
+      translate(91, 79);
+      fill(220, 223, 224);
+      rect(0, 0, 203, 217);
+      popMatrix();
+
+      //shows the buttons
+      pushMatrix();
+      drawButton(btn4);
+      drawButton(btn5);
+      drawButton(btn6);
+      popMatrix();
+
+      //text for options
+      pushMatrix();
+      var f26 = createFont("Verdana", 20);
+      textFont(f26, 15);
+      translate(182,101);
+      fill(0, 0, 0);
+      text("no", 0, 0);
+      text("response", -20, 16);
+      popMatrix();
+
+      pushMatrix();
+      var f26 = createFont("Verdana", 20);
+      textFont(f26, 15);
+      translate(182,167);
+      fill(0, 0, 0);
+      text("MY", 0, 0);
+      text("people?!?", -21, 14);
+      popMatrix();
+
+      pushMatrix();
+      var f26 = createFont("Verdana", 20);
+      textFont(f26, 15);
+      translate(156,244);
+      fill(0, 0, 0);
+      text("..I guess", 0, 0);
+      popMatrix();
+
+      //fill space
+      pushMatrix();
+      fill(0, 0, 0);
+      rect(0, 398, 399, 155);
+      popMatrix();
+  };
+
+  var drawScene71 = function() {
+      currentScene = 7.1;
+      //first certificate
+      var x = 16;
+      var y = 23;
+
+      fill(218, 235, 232);
+      rect(0, 0 ,398 ,398);
+
+      noStroke();
+      fill(0, 0, 0);
+      rect(x, y, 108, 73);
+
+      fill(247, 239, 239);
+      rect(x+11, y+10, 87, 54);
+
+      pushMatrix();
+      translate(43, 44);
+      var f11 = createFont("cursive", 20);
+      textFont(f11, 6);
+      fill(0, 0, 0);
+      rotate(0);
+      text("Certificate of Honor", 0, 0);
+      popMatrix();
+
+      pushMatrix();
+      translate(41, 53);
+      var f11 = createFont("cursive", 20);
+      textFont(f11, 8);
+      fill(0, 0, 0);
+      rotate(0);
+      text("Martin Spalding", 0, 0);
+      popMatrix();
+
+      pushMatrix();
+      translate(37, 63);
+      var f11 = createFont("cursive", 20);
+      textFont(f11, 4);
+      fill(0, 0, 0);
+      rotate(0);
+      text("this was written to honor martin for", 0, 0);
+      text("something not sure for what but it wa", 0, 4);
+      text("was for something and yeah", 0, 8);
+      popMatrix();
+
+      //second certificate
+      noStroke();
+      fill(0, 0, 0);
+      rect(272, 23, 108, 73);
+
+      fill(247, 239, 239);
+      rect(283, 33, 87, 54);
+
+      //certificate seal
+      pushMatrix();
+      translate(318, 48);
+      fill(235, 228, 87);
+      ellipse(10, 10, 10, 10);
+      popMatrix();
+
+      pushMatrix();
+      translate(83, 68);
+      fill(235, 228, 87);
+      ellipse(10, 10, 10, 10);
+      popMatrix();
+
+      //bookshelf
+      noStroke();
+      fill(0, 0, 0);
+      rect(158, 73, 82, 73);
+
+      fill(201, 123, 201);
+      rect(163, 83, 72, 54);
+
+      //books on bookshelf
+      pushMatrix();
+      stroke(0, 0, 0);
+      fill(173, 173, 173);
+      beginShape(QUAD_STRIP);
+      translate(33, -137);
+      vertex(130, 220);
+      vertex(130, 275);
+      vertex(150, 220);
+      vertex(150, 275);
+      vertex(165, 220);
+      vertex(165, 275);
+      vertex(182, 220);
+      vertex(182, 275);
+      vertex(202, 220);
+      vertex(202, 275);
+      endShape();
+      popMatrix();
+
+      pushMatrix();
+      translate(287, -70);
+      var f11 = createFont("cursive", 20);
+      textFont(f11, 9);
+      fill(0, 0, 0);
+      rotate(0);
+      text("District of Wizonia", 3, 113);
+      popMatrix();
+
+      pushMatrix();
+      translate(278, -56);
+      var f11 = createFont("cursive", 20);
+      textFont(f11, 4);
+      fill(0, 0, 0);
+      rotate(0);
+      text("Cwords and words and more wordsand word", 13, 124);
+      text("Cwords but in a different format so that it", 13, 129);
+      popMatrix();
+
+      pushMatrix();
+      var f3 = createFont("times", 20);
+      textFont(f3, 6);
+      translate(177,83);
+      fill(0, 0, 0);
+      rotate(190.1);
+      text("HOW TO SUCCEED", 0, 0);
+      text("THE GIVER", 12, -18);
+      text("THE INTERNET", 4, -33);
+      text("WILL ROBOTS", 7, -55);
+      text("TAKE OUR JOBS?", 4, -48);
+      popMatrix();
+
+      //chair
+      pushMatrix();
+      translate(57,56);
+      fill(48, 48, 48);
+      beginShape();
+      curveVertex(-165,  72);
+      curveVertex(165,  267);
+      curveVertex(203,  132);
+      curveVertex(76,  127);
+      curveVertex(76, 259);
+      curveVertex(242, 206);
+      endShape();
+      popMatrix();
+
+      //character
+      pushMatrix();
+      noStroke();
+      scale(1.5);
+      var currentScene;
+      var x = 130;
+      var y = 139;
+      var w = 50;
+      var h = 50;
+
+          fill(255, 224, 189);
+          ellipse(x, y, w, h);//head
+          fill(186, 160, 232);
+          rect(x-25, y+25, w, h+28);//torso
+          fill(161, 150, 161);
+          rect(x+10, y+103, w-35, h-10);//right leg
+          rect(x-25, y+103, w-35, h-10);//left leg
+          fill(255, 224, 189);
+          ellipse(x-30, y+87, w-40, h-40);//left stub
+          ellipse(x+32, y+87, w-40, h-40);//right stub
+          fill(255, 255, 255);
+          ellipse(x-10, y-4, w-40, h-40);//left eyeball
+          ellipse(x+10, y-4, w-40, h-40);//right eyeball
+          fill(0, 0, 0);
+          ellipse(x-10, y-4, w-47, w-47);//left pupil
+      ellipse(x+10, y-4, w-47, h-47);//right pupil
+      fill(199, 14, 42);
+      arc(x+1, y+10, w-29, h-40, 10, 165);//mouth
+      fill(0, 0, 0);
+      ellipse(x-17, y+149, w-35, h-40);//left foot stub
+      ellipse(x+18, y+149, w-35, h-40);//right foot stub
+      fill(186, 160, 232);
+      rect(x-36, y+25, w-40, h+7);//left arm
+      rect(x+26, y+25, w-40, h+7);//right arm
+      fill(255, 0, 0);
+      triangle(x+2, y+48, x+15, y+26, x-16, y+26);//tie
+      fill(0, 0, 0);
+      ellipse(x-6, y-24, w-40, h-40);//hair
+      ellipse(x-14, y-21, w-40, h-40);
+      ellipse(x+2, y-24, w-40, h-40);
+      ellipse(x+11, y-23, w-40, h-40);
+      ellipse(x-21, y-15, w-40, h-40);
+      ellipse(x+19, y-18, w-40, h-40);
+
+      popMatrix();
+
+          //desk
+      fill(120, 99, 72);
+      rect(1, 398, 397, -83);
+
+          //desk decorations
+      pushMatrix();
+      fill(255, 255, 255);
+      translate(58,224);
+      rect(93, 98, 77, 69);
+      popMatrix();
+
+      //paper text
+      pushMatrix();
+      translate(286,467);
+      rotate(180);
+      textSize(8);
+      fill(0, 0, 0);
+      text("resume", 81, 90);
+      popMatrix();
+
+      //dialogue
+      pushMatrix();
+      translate(23, 322);
+      fill(69, 69, 69);
+      rect(0, 0, 359, 64);
+      popMatrix();
+
+      pushMatrix();
+      translate(29, 326);
+      fill(255, 255, 255);
+      rect(0, 0, 347, 55);
+      popMatrix();
+
+          //dialogue text
+      pushMatrix();
+      var f26 = createFont("Verdana", 20);
+      textFont(f26, 13);
+      translate(35,330);
+      fill(0, 0, 0);
+      text("MARTIN SPALDING:", 0, 0);
+      popMatrix();
+
+      pushMatrix();
+      textSize(14);
+      translate(38,348);
+      fill(0, 0, 0);
+      text("Well then..why should we hire you?", 0, 0);
+      popMatrix();
+      btn22.draw();
+
+      //fill space
+      pushMatrix();
+      fill(0, 0, 0);
+      rect(0, 398, 399, 155);
+      popMatrix();
+  };
+
+  var drawScene72 = function() {
+      currentScene = 7.2;
+      //wall
+      fill(218, 235, 232);
+      rect(0,0,398,398);
+
+      //door
+      pushMatrix();
+      translate(132,67);
+      fill(166, 131, 48);
+      rect(0, 0, 126, 184);
+      popMatrix();
+
+      //door
+      pushMatrix();
+      translate(132,67);
+      fill(120, 99, 72);
+      rect(0, 0, 126, 184);
+      popMatrix();
+
+      //door decoration
+      pushMatrix();
+      translate(150,79);
+      noFill();
+      rect(0, 0, 92, 71);
+      popMatrix();
+
+      pushMatrix();
+      translate(150,173);
+      noFill();
+      rect(0, 0, 92, 71);
+      popMatrix();
+
+      pushMatrix();
+      translate(246, 164);
+      noStroke();
+      fill(255, 242, 0);
+      ellipse(0, 0, 10, 10);
+      popMatrix();
+      //floor
+      pushMatrix();
+      translate(0,248);
+      noStroke();
+      fill(235, 235, 235);
+      rect(1, 0, 397, 90);
+      popMatrix();
+
+      //wall decoration (left side strip)
+      pushMatrix();
+      translate(1, 238);
+      noStroke();
+      fill(255, 255, 255);
+      rect(0, 0, 132, 13);
+      popMatrix();
+
+      pushMatrix();
+      rotate(102.1);
+      translate(67, -133);
+      noStroke();
+      fill(255, 255, 255);
+      rect(0, 0, 183, 13);
+      popMatrix();
+
+      //wall decoration (right side strip)
+      pushMatrix();
+      translate(258, 238);
+      noStroke();
+      fill(255, 255, 255);
+      rect(0, 0, 140, 13);
+      popMatrix();
+
+      pushMatrix();
+      rotate(1.57);
+      translate(56, -270);
+      noStroke();
+      fill(255, 255, 255);
+      rect(0, 0, 190, 13);
+      popMatrix();
+
+      pushMatrix();
+      rotate(169.64);
+      translate(120, 57);
+      noStroke();
+      fill(255, 255, 255);
+      rect(0, 0, 140, 13);
+      popMatrix();
+
+      //chair
+      pushMatrix();
+      translate(55,60);
+      fill(48, 48, 48);
+      rotate(-0.0);
+      beginShape();
+      curveVertex(-165,  72);
+      curveVertex(165,  267);
+      curveVertex(203,  132);
+      curveVertex(76,  127);
+      curveVertex(76, 259);
+      curveVertex(242, 206);
+      endShape();
+      popMatrix();
+
+      //character
+      pushMatrix();
+      translate(-69,-12);
+      noStroke();
+      scale(1.35);
+      var drawPerson = function() {
+      fill(224,172,105);//head
+      ellipse(193, 172, 60, 60);
+      fill(255, 255, 255);
+      ellipse(201, 165, 13, 13);//left eyeball
+      ellipse(184, 165, 13, 13);//right eyeball
+      fill(0, 0, 0);
+      ellipse(201, 165, 6, 6);//left pupil
+      ellipse(184, 165, 6, 6);//right pupil
+      fill(199, 14, 42);
+      arc(193, 182, 21, 10, 10, 165);//mouth
+      fill(97, 212, 155);
+      rect(154, 202, 11, 46);//left arm
+      rect(218, 202, 21, 46);//right arm
+      fill(97, 212, 155);
+      rect(165, 202, 60, 65);//torso
+      fill(224,172,105);
+      ellipse(160, 250, 13, 13);//left stub
+      ellipse(232, 250, 13, 13);//right stub
+      fill(230, 216, 216);
+      ellipse(194, 208, 8, 8);
+      ellipse(194, 220, 8, 8);
+      ellipse(194, 232, 8, 8);
+      ellipse(194, 244, 8, 8);
+      fill(0, 0, 0);
+      ellipse(218, 156, 15, 15);//hair
+      ellipse(168, 154, 15, 15);
+      ellipse(166, 164, 15, 15);
+      ellipse(163, 176, 15, 15);
+      ellipse(164, 185, 15, 15);
+      ellipse(223, 165, 15, 15);
+      ellipse(224, 175, 15, 15);
+      ellipse(224, 186, 15, 15);
+      ellipse(171, 149, 15, 15);
+      ellipse(213, 149, 15, 15);
+      ellipse(206, 144, 15, 15);
+      ellipse(198, 143, 15, 15);
+      ellipse(180, 146, 15, 15);
+      ellipse(204, 145, 15, 15);
+      ellipse(189, 144, 15, 15);
+      };
+      drawPerson();
+      popMatrix();
+
+      //desk
+      fill(120, 99, 72);
+      rect(1, 398, 397, -83);
+
+      //dialogue
+      pushMatrix();
+      translate(23, 322);
+      fill(69, 69, 69);
+      rect(0, 0, 359, 64);
+      popMatrix();
+
+      pushMatrix();
+      translate(29, 326);
+      fill(255, 255, 255);
+      rect(0, 0, 347, 55);
+      popMatrix();
+
+      //dialogue text
+      pushMatrix();
+      var f26 = createFont("Verdana", 20);
+      textFont(f26, 13);
+      translate(35,330);
+      fill(0, 0, 0);
+      text("SELENA ESTEVES:", 0, 0);
+      popMatrix();
+
+      pushMatrix();
+      textSize(14);
+      translate(38,348);
+      fill(0, 0, 0);
+      text("I know a lot about engineering.", 0, 0);
+      popMatrix();
+      btn23.draw();
+
+      //fill space
+      pushMatrix();
+      fill(0, 0, 0);
+      rect(0, 398, 399, 155);
+      popMatrix();
+  };
+
+  var drawScene73 = function(){
+      currentScene = 7.3;
+      //first certificate
+      var x = 16;
+      var y = 23;
+
+      fill(218, 235, 232);
+      rect(0, 0 ,398 ,398);
+
+      noStroke();
+      fill(0, 0, 0);
+      rect(x, y, 108, 73);
+
+      fill(247, 239, 239);
+      rect(x+11, y+10, 87, 54);
+
+      pushMatrix();
+      translate(43, 44);
+      var f11 = createFont("cursive", 20);
+      textFont(f11, 6);
+      fill(0, 0, 0);
+      rotate(0);
+      text("Certificate of Honor", 0, 0);
+      popMatrix();
+
+      pushMatrix();
+      translate(41, 53);
+      var f11 = createFont("cursive", 20);
+      textFont(f11, 8);
+      fill(0, 0, 0);
+      rotate(0);
+      text("Martin Spalding", 0, 0);
+      popMatrix();
+
+      pushMatrix();
+      translate(37, 63);
+      var f11 = createFont("cursive", 20);
+      textFont(f11, 4);
+      fill(0, 0, 0);
+      rotate(0);
+      text("this was written to honor martin for", 0, 0);
+      text("something not sure for what but it wa", 0, 4);
+      text("was for something and yeah", 0, 8);
+      popMatrix();
+
+      //second certificate
+      noStroke();
+      fill(0, 0, 0);
+      rect(272, 23, 108, 73);
+
+      fill(247, 239, 239);
+      rect(283, 33, 87, 54);
+
+      //certificate seal
+      pushMatrix();
+      translate(318, 48);
+      fill(235, 228, 87);
+      ellipse(10, 10, 10, 10);
+      popMatrix();
+
+      pushMatrix();
+      translate(83, 68);
+      fill(235, 228, 87);
+      ellipse(10, 10, 10, 10);
+      popMatrix();
+
+      //bookshelf
+      noStroke();
+      fill(0, 0, 0);
+      rect(158, 73, 82, 73);
+
+      fill(201, 123, 201);
+      rect(163, 83, 72, 54);
+
+      //books on bookshelf
+      pushMatrix();
+      stroke(0, 0, 0);
+      fill(173, 173, 173);
+      beginShape(QUAD_STRIP);
+      translate(33, -137);
+      vertex(130, 220);
+      vertex(130, 275);
+      vertex(150, 220);
+      vertex(150, 275);
+      vertex(165, 220);
+      vertex(165, 275);
+      vertex(182, 220);
+      vertex(182, 275);
+      vertex(202, 220);
+      vertex(202, 275);
+      endShape();
+      popMatrix();
+
+      pushMatrix();
+      translate(287, -70);
+      var f11 = createFont("cursive", 20);
+      textFont(f11, 9);
+      fill(0, 0, 0);
+      rotate(0);
+      text("District of Wizonia", 3, 113);
+      popMatrix();
+
+      pushMatrix();
+      translate(278, -56);
+      var f11 = createFont("cursive", 20);
+      textFont(f11, 4);
+      fill(0, 0, 0);
+      rotate(0);
+      text("Cwords and words and more wordsand word", 13, 124);
+      text("Cwords but in a different format so that it", 13, 129);
+      popMatrix();
+
+      pushMatrix();
+      var f3 = createFont("times", 20);
+      textFont(f3, 6);
+      translate(177,83);
+      fill(0, 0, 0);
+      rotate(190.1);
+      text("HOW TO SUCCEED", 0, 0);
+      text("THE GIVER", 12, -18);
+      text("THE INTERNET", 4, -33);
+      text("WILL ROBOTS", 7, -55);
+      text("TAKE OUR JOBS?", 4, -48);
+      popMatrix();
+
+      //chair
+      pushMatrix();
+      translate(57,56);
+      fill(48, 48, 48);
+      beginShape();
+      curveVertex(-165,  72);
+      curveVertex(165,  267);
+      curveVertex(203,  132);
+      curveVertex(76,  127);
+      curveVertex(76, 259);
+      curveVertex(242, 206);
+      endShape();
+      popMatrix();
+
+      //character
+      pushMatrix();
+      noStroke();
+      scale(1.5);
+      var currentScene;
+      var x = 130;
+      var y = 139;
+      var w = 50;
+      var h = 50;
+
+          fill(255, 224, 189);
+          ellipse(x, y, w, h);//head
+          fill(186, 160, 232);
+          rect(x-25, y+25, w, h+28);//torso
+          fill(161, 150, 161);
+          rect(x+10, y+103, w-35, h-10);//right leg
+          rect(x-25, y+103, w-35, h-10);//left leg
+          fill(255, 224, 189);
+          ellipse(x-30, y+87, w-40, h-40);//left stub
+          ellipse(x+32, y+87, w-40, h-40);//right stub
+          fill(255, 255, 255);
+          ellipse(x-10, y-4, w-40, h-40);//left eyeball
+          ellipse(x+10, y-4, w-40, h-40);//right eyeball
+          fill(0, 0, 0);
+          ellipse(x-10, y-4, w-47, w-47);//left pupil
+      ellipse(x+10, y-4, w-47, h-47);//right pupil
+      fill(199, 14, 42);
+      arc(x+1, y+10, w-29, h-40, 10, 165);//mouth
+      fill(0, 0, 0);
+      ellipse(x-17, y+149, w-35, h-40);//left foot stub
+      ellipse(x+18, y+149, w-35, h-40);//right foot stub
+      fill(186, 160, 232);
+      rect(x-36, y+25, w-40, h+7);//left arm
+      rect(x+26, y+25, w-40, h+7);//right arm
+      fill(255, 0, 0);
+      triangle(x+2, y+48, x+15, y+26, x-16, y+26);//tie
+      fill(0, 0, 0);
+      ellipse(x-6, y-24, w-40, h-40);//hair
+      ellipse(x-14, y-21, w-40, h-40);
+      ellipse(x+2, y-24, w-40, h-40);
+      ellipse(x+11, y-23, w-40, h-40);
+      ellipse(x-21, y-15, w-40, h-40);
+      ellipse(x+19, y-18, w-40, h-40);
+
+      popMatrix();
+
+          //desk
+      fill(120, 99, 72);
+      rect(1, 398, 397, -83);
+
+          //desk decorations
+      pushMatrix();
+      fill(255, 255, 255);
+      translate(58,224);
+      rect(93, 98, 77, 69);
+      popMatrix();
+
+      //paper text
+      pushMatrix();
+      translate(286,467);
+      rotate(180);
+      textSize(8);
+      fill(0, 0, 0);
+      text("resume", 81, 90);
+      popMatrix();
+
+      //dialogue
+      pushMatrix();
+      translate(23, 322);
+      fill(69, 69, 69);
+      rect(0, 0, 359, 64);
+      popMatrix();
+
+      pushMatrix();
+      translate(29, 326);
+      fill(255, 255, 255);
+      rect(0, 0, 347, 55);
+      popMatrix();
+
+          //dialogue text
+      pushMatrix();
+      var f26 = createFont("Verdana", 20);
+      textFont(f26, 13);
+      translate(35,330);
+      fill(0, 0, 0);
+      text("MARTIN SPALDING:", 0, 0);
+      popMatrix();
+
+      pushMatrix();
+      textSize(14);
+      translate(38,348);
+      fill(0, 0, 0);
+      text("*nods head* Wow, You speak good english.", 0, 0);
+      popMatrix();
+      btn24.draw();
+
+      //fill space
+      pushMatrix();
+      fill(0, 0, 0);
+      rect(0, 398, 399, 155);
+      popMatrix();
+  };
+
+  //DECISION 3 buttons 7-9
+  var drawScene74 = function() {
+      currentScene = 7.4;
+      //button setup
+
+
+      //buttons for options
+      var drawButton = function(btn) {
+      fill(243, 247, 247);
+      rect(btn.x, btn.y, btn.width, btn.height, 5);
+      fill(0, 0, 0);
+      textSize(19);
+      textAlign(LEFT, TOP);
+      text(" ", btn.x+10, btn.y+btn.height/4);
+      };
+
+      //wall
+      fill(218, 235, 232);
+      rect(0,0,398,398);
+
+      //door
+      pushMatrix();
+      translate(132,67);
+      fill(166, 131, 48);
+      rect(0, 0, 126, 184);
+      popMatrix();
+
+      //door
+      pushMatrix();
+      translate(132,67);
+      fill(120, 99, 72);
+      rect(0, 0, 126, 184);
+      popMatrix();
+
+      //door decoration
+      pushMatrix();
+      translate(150,79);
+      noFill();
+      rect(0, 0, 92, 71);
+      popMatrix();
+
+      pushMatrix();
+      translate(150,173);
+      noFill();
+      rect(0, 0, 92, 71);
+      popMatrix();
+
+      pushMatrix();
+      translate(246, 164);
+      noStroke();
+      fill(255, 242, 0);
+      ellipse(0, 0, 10, 10);
+      popMatrix();
+      //floor
+      pushMatrix();
+      translate(0,248);
+      noStroke();
+      fill(235, 235, 235);
+      rect(1, 0, 397, 90);
+      popMatrix();
+
+      //wall decoration (left side strip)
+      pushMatrix();
+      translate(1, 238);
+      noStroke();
+      fill(255, 255, 255);
+      rect(0, 0, 132, 13);
+      popMatrix();
+
+      pushMatrix();
+      rotate(102.1);
+      translate(67, -133);
+      noStroke();
+      fill(255, 255, 255);
+      rect(0, 0, 183, 13);
+      popMatrix();
+
+      //wall decoration (right side strip)
+      pushMatrix();
+      translate(258, 238);
+      noStroke();
+      fill(255, 255, 255);
+      rect(0, 0, 140, 13);
+      popMatrix();
+
+      pushMatrix();
+      rotate(1.57);
+      translate(56, -270);
+      noStroke();
+      fill(255, 255, 255);
+      rect(0, 0, 190, 13);
+      popMatrix();
+
+      pushMatrix();
+      rotate(169.64);
+      translate(120, 57);
+      noStroke();
+      fill(255, 255, 255);
+      rect(0, 0, 140, 13);
+      popMatrix();
+
+      //chair
+      pushMatrix();
+      translate(55,60);
+      fill(48, 48, 48);
+      rotate(-0.0);
+      beginShape();
+      curveVertex(-165,  72);
+      curveVertex(165,  267);
+      curveVertex(203,  132);
+      curveVertex(76,  127);
+      curveVertex(76, 259);
+      curveVertex(242, 206);
+      endShape();
+      popMatrix();
+
+      //character
+      pushMatrix();
+      translate(-69,-12);
+      noStroke();
+      scale(1.35);
+      var drawPerson = function() {
+      fill(224,172,105);//head
+      ellipse(193, 172, 60, 60);
+      fill(255, 255, 255);
+      ellipse(201, 165, 13, 13);//left eyeball
+      ellipse(184, 165, 13, 13);//right eyeball
+      fill(0, 0, 0);
+      ellipse(201, 165, 6, 6);//left pupil
+      ellipse(184, 165, 6, 6);//right pupil
+      fill(199, 14, 42);
+      arc(193, 182, 21, 10, 10, 165);//mouth
+      fill(97, 212, 155);
+      rect(154, 202, 11, 46);//left arm
+      rect(218, 202, 21, 46);//right arm
+      fill(97, 212, 155);
+      rect(165, 202, 60, 65);//torso
+      fill(224,172,105);
+      ellipse(160, 250, 13, 13);//left stub
+      ellipse(232, 250, 13, 13);//right stub
+      fill(230, 216, 216);
+      ellipse(194, 208, 8, 8);
+      ellipse(194, 220, 8, 8);
+      ellipse(194, 232, 8, 8);
+      ellipse(194, 244, 8, 8);
+      fill(0, 0, 0);
+      ellipse(218, 156, 15, 15);//hair
+      ellipse(168, 154, 15, 15);
+      ellipse(166, 164, 15, 15);
+      ellipse(163, 176, 15, 15);
+      ellipse(164, 185, 15, 15);
+      ellipse(223, 165, 15, 15);
+      ellipse(224, 175, 15, 15);
+      ellipse(224, 186, 15, 15);
+      ellipse(171, 149, 15, 15);
+      ellipse(213, 149, 15, 15);
+      ellipse(206, 144, 15, 15);
+      ellipse(198, 143, 15, 15);
+      ellipse(180, 146, 15, 15);
+      ellipse(204, 145, 15, 15);
+      ellipse(189, 144, 15, 15);
+      };
+      drawPerson();
+      popMatrix();
+
+      //desk
+      fill(120, 99, 72);
+      rect(1, 398, 397, -83);
+
+      //dialogue
+      pushMatrix();
+      translate(23, 322);
+      fill(69, 69, 69);
+      rect(0, 0, 359, 64);
+      popMatrix();
+
+      pushMatrix();
+      translate(29, 326);
+      fill(255, 255, 255);
+      rect(0, 0, 347, 55);
+      popMatrix();
+
+      //dialogue text
+      pushMatrix();
+      var f26 = createFont("Verdana", 20);
+      textFont(f26, 13);
+      translate(35,330);
+      fill(0, 0, 0);
+      text("SELENA ESTEVES:", 0, 0);
+      popMatrix();
+
+      pushMatrix();
+      textSize(14);
+      translate(38,361);
+      fill(0, 0, 0);
+      text("", 0, 0);
+      popMatrix();
+
+      pushMatrix();
+      textSize(14);
+      translate(38,361);
+      fill(0, 0, 0);
+      text("", 0, 0);
+      popMatrix();
+
+      //option box
+      pushMatrix();
+      translate(88, 75);
+      fill(69, 69, 69);
+      rect(0, 0, 209, 224);
+      popMatrix();
+
+      pushMatrix();
+      translate(91, 79);
+      fill(220, 223, 224);
+      rect(0, 0, 203, 217);
+      popMatrix();
+
+      //shows the buttons
+      pushMatrix();
+      drawButton(btn7);
+      drawButton(btn8);
+      drawButton(btn9);
+      popMatrix();
+
+      //text for options
+      pushMatrix();
+      var f26 = createFont("Verdana", 20);
+      textFont(f26, 15);
+      translate(171,108);
+      fill(0, 0, 0);
+      text("okay..", 0, 0);
+      popMatrix();
+
+      pushMatrix();
+      var f26 = createFont("Verdana", 20);
+      textFont(f26, 15);
+      translate(144,170);
+      fill(0, 0, 0);
+      text("What are you", 0, 0);
+      text("trying to say?", -1, 14);
+      popMatrix();
+
+      pushMatrix();
+      var f26 = createFont("Verdana", 20);
+      textFont(f26, 15);
+      translate(153,244);
+      fill(0, 0, 0);
+      text("Thank you?", 0, 0);
+      popMatrix();
+
+      //fill space
+      pushMatrix();
+      fill(0, 0, 0);
+      rect(0, 398, 399, 155);
+      popMatrix();
+  };
+
+  var drawScene75 = function() {
+      currentScene = 7.5;
+      //first certificate
+      var x = 16;
+      var y = 23;
+
+      fill(218, 235, 232);
+      rect(0, 0 ,398 ,398);
+
+      noStroke();
+      fill(0, 0, 0);
+      rect(x, y, 108, 73);
+
+      fill(247, 239, 239);
+      rect(x+11, y+10, 87, 54);
+
+      pushMatrix();
+      translate(43, 44);
+      var f11 = createFont("cursive", 20);
+      textFont(f11, 6);
+      fill(0, 0, 0);
+      rotate(0);
+      text("Certificate of Honor", 0, 0);
+      popMatrix();
+
+      pushMatrix();
+      translate(41, 53);
+      var f11 = createFont("cursive", 20);
+      textFont(f11, 8);
+      fill(0, 0, 0);
+      rotate(0);
+      text("Martin Spalding", 0, 0);
+      popMatrix();
+
+      pushMatrix();
+      translate(37, 63);
+      var f11 = createFont("cursive", 20);
+      textFont(f11, 4);
+      fill(0, 0, 0);
+      rotate(0);
+      text("this was written to honor martin for", 0, 0);
+      text("something not sure for what but it wa", 0, 4);
+      text("was for something and yeah", 0, 8);
+      popMatrix();
+
+      //second certificate
+      noStroke();
+      fill(0, 0, 0);
+      rect(272, 23, 108, 73);
+
+      fill(247, 239, 239);
+      rect(283, 33, 87, 54);
+
+      //certificate seal
+      pushMatrix();
+      translate(318, 48);
+      fill(235, 228, 87);
+      ellipse(10, 10, 10, 10);
+      popMatrix();
+
+      pushMatrix();
+      translate(83, 68);
+      fill(235, 228, 87);
+      ellipse(10, 10, 10, 10);
+      popMatrix();
+
+      //bookshelf
+      noStroke();
+      fill(0, 0, 0);
+      rect(158, 73, 82, 73);
+
+      fill(201, 123, 201);
+      rect(163, 83, 72, 54);
+
+      //books on bookshelf
+      pushMatrix();
+      stroke(0, 0, 0);
+      fill(173, 173, 173);
+      beginShape(QUAD_STRIP);
+      translate(33, -137);
+      vertex(130, 220);
+      vertex(130, 275);
+      vertex(150, 220);
+      vertex(150, 275);
+      vertex(165, 220);
+      vertex(165, 275);
+      vertex(182, 220);
+      vertex(182, 275);
+      vertex(202, 220);
+      vertex(202, 275);
+      endShape();
+      popMatrix();
+
+      pushMatrix();
+      translate(287, -70);
+      var f11 = createFont("cursive", 20);
+      textFont(f11, 9);
+      fill(0, 0, 0);
+      rotate(0);
+      text("District of Wizonia", 3, 113);
+      popMatrix();
+
+      pushMatrix();
+      translate(278, -56);
+      var f11 = createFont("cursive", 20);
+      textFont(f11, 4);
+      fill(0, 0, 0);
+      rotate(0);
+      text("Cwords and words and more wordsand word", 13, 124);
+      text("Cwords but in a different format so that it", 13, 129);
+      popMatrix();
+
+      pushMatrix();
+      var f3 = createFont("times", 20);
+      textFont(f3, 6);
+      translate(177,83);
+      fill(0, 0, 0);
+      rotate(190.1);
+      text("HOW TO SUCCEED", 0, 0);
+      text("THE GIVER", 12, -18);
+      text("THE INTERNET", 4, -33);
+      text("WILL ROBOTS", 7, -55);
+      text("TAKE OUR JOBS?", 4, -48);
+      popMatrix();
+
+      //chair
+      pushMatrix();
+      translate(57,56);
+      fill(48, 48, 48);
+      beginShape();
+      curveVertex(-165,  72);
+      curveVertex(165,  267);
+      curveVertex(203,  132);
+      curveVertex(76,  127);
+      curveVertex(76, 259);
+      curveVertex(242, 206);
+      endShape();
+      popMatrix();
+
+      //character
+      pushMatrix();
+      noStroke();
+      scale(1.5);
+      var currentScene;
+      var x = 130;
+      var y = 139;
+      var w = 50;
+      var h = 50;
+
+          fill(255, 224, 189);
+          ellipse(x, y, w, h);//head
+          fill(186, 160, 232);
+          rect(x-25, y+25, w, h+28);//torso
+          fill(161, 150, 161);
+          rect(x+10, y+103, w-35, h-10);//right leg
+          rect(x-25, y+103, w-35, h-10);//left leg
+          fill(255, 224, 189);
+          ellipse(x-30, y+87, w-40, h-40);//left stub
+          ellipse(x+32, y+87, w-40, h-40);//right stub
+          fill(255, 255, 255);
+          ellipse(x-10, y-4, w-40, h-40);//left eyeball
+          ellipse(x+10, y-4, w-40, h-40);//right eyeball
+          fill(0, 0, 0);
+          ellipse(x-10, y-4, w-47, w-47);//left pupil
+      ellipse(x+10, y-4, w-47, h-47);//right pupil
+      fill(199, 14, 42);
+      arc(x+1, y+10, w-29, h-40, 10, 165);//mouth
+      fill(0, 0, 0);
+      ellipse(x-17, y+149, w-35, h-40);//left foot stub
+      ellipse(x+18, y+149, w-35, h-40);//right foot stub
+      fill(186, 160, 232);
+      rect(x-36, y+25, w-40, h+7);//left arm
+      rect(x+26, y+25, w-40, h+7);//right arm
+      fill(255, 0, 0);
+      triangle(x+2, y+48, x+15, y+26, x-16, y+26);//tie
+      fill(0, 0, 0);
+      ellipse(x-6, y-24, w-40, h-40);//hair
+      ellipse(x-14, y-21, w-40, h-40);
+      ellipse(x+2, y-24, w-40, h-40);
+      ellipse(x+11, y-23, w-40, h-40);
+      ellipse(x-21, y-15, w-40, h-40);
+      ellipse(x+19, y-18, w-40, h-40);
+
+      popMatrix();
+
+          //desk
+      fill(120, 99, 72);
+      rect(1, 398, 397, -83);
+
+          //desk decorations
+      pushMatrix();
+      fill(255, 255, 255);
+      translate(58,224);
+      rect(93, 98, 77, 69);
+      popMatrix();
+
+      //paper text
+      pushMatrix();
+      translate(286,467);
+      rotate(180);
+      textSize(8);
+      fill(0, 0, 0);
+      text("resume", 81, 90);
+      popMatrix();
+
+      //dialogue
+      pushMatrix();
+      translate(23, 322);
+      fill(69, 69, 69);
+      rect(0, 0, 359, 64);
+      popMatrix();
+
+      pushMatrix();
+      translate(29, 326);
+      fill(255, 255, 255);
+      rect(0, 0, 347, 55);
+      popMatrix();
+
+          //dialogue text
+      pushMatrix();
+      var f26 = createFont("Verdana", 20);
+      textFont(f26, 13);
+      translate(35,330);
+      fill(0, 0, 0);
+      text("MARTIN SPALDING:", 0, 0);
+      popMatrix();
+
+      pushMatrix();
+      textSize(14);
+      translate(37,345);
+      fill(0, 0, 0);
+      text("Alright then let us continue. Describe a difficult", 0, 0);
+      text("work situation and how you overcame it.", 0, 12);
+      popMatrix();
+      btn25.draw();
+
+      //fill space
+      pushMatrix();
+      fill(0, 0, 0);
+      rect(0, 398, 399, 155);
+      popMatrix();
+  };
+
+  var drawScene76 = function() {
+      currentScene = 7.6;
+      //wall
+      fill(218, 235, 232);
+      rect(0,0,398,398);
+
+      //door
+      pushMatrix();
+      translate(132,67);
+      fill(166, 131, 48);
+      rect(0, 0, 126, 184);
+      popMatrix();
+
+      //door
+      pushMatrix();
+      translate(132,67);
+      fill(120, 99, 72);
+      rect(0, 0, 126, 184);
+      popMatrix();
+
+      //door decoration
+      pushMatrix();
+      translate(150,79);
+      noFill();
+      rect(0, 0, 92, 71);
+      popMatrix();
+
+      pushMatrix();
+      translate(150,173);
+      noFill();
+      rect(0, 0, 92, 71);
+      popMatrix();
+
+      pushMatrix();
+      translate(246, 164);
+      noStroke();
+      fill(255, 242, 0);
+      ellipse(0, 0, 10, 10);
+      popMatrix();
+      //floor
+      pushMatrix();
+      translate(0,248);
+      noStroke();
+      fill(235, 235, 235);
+      rect(1, 0, 397, 90);
+      popMatrix();
+
+      //wall decoration (left side strip)
+      pushMatrix();
+      translate(1, 238);
+      noStroke();
+      fill(255, 255, 255);
+      rect(0, 0, 132, 13);
+      popMatrix();
+
+      pushMatrix();
+      rotate(102.1);
+      translate(67, -133);
+      noStroke();
+      fill(255, 255, 255);
+      rect(0, 0, 183, 13);
+      popMatrix();
+
+      //wall decoration (right side strip)
+      pushMatrix();
+      translate(258, 238);
+      noStroke();
+      fill(255, 255, 255);
+      rect(0, 0, 140, 13);
+      popMatrix();
+
+      pushMatrix();
+      rotate(1.57);
+      translate(56, -270);
+      noStroke();
+      fill(255, 255, 255);
+      rect(0, 0, 190, 13);
+      popMatrix();
+
+      pushMatrix();
+      rotate(169.64);
+      translate(120, 57);
+      noStroke();
+      fill(255, 255, 255);
+      rect(0, 0, 140, 13);
+      popMatrix();
+
+      //chair
+      pushMatrix();
+      translate(55,60);
+      fill(48, 48, 48);
+      rotate(-0.0);
+      beginShape();
+      curveVertex(-165,  72);
+      curveVertex(165,  267);
+      curveVertex(203,  132);
+      curveVertex(76,  127);
+      curveVertex(76, 259);
+      curveVertex(242, 206);
+      endShape();
+      popMatrix();
+
+      //character
+      pushMatrix();
+      translate(-69,-12);
+      noStroke();
+      scale(1.35);
+      var drawPerson = function() {
+      fill(224,172,105);//head
+      ellipse(193, 172, 60, 60);
+      fill(255, 255, 255);
+      ellipse(201, 165, 13, 13);//left eyeball
+      ellipse(184, 165, 13, 13);//right eyeball
+      fill(0, 0, 0);
+      ellipse(201, 165, 6, 6);//left pupil
+      ellipse(184, 165, 6, 6);//right pupil
+      fill(199, 14, 42);
+      arc(193, 182, 21, 10, 10, 165);//mouth
+      fill(97, 212, 155);
+      rect(154, 202, 11, 46);//left arm
+      rect(218, 202, 21, 46);//right arm
+      fill(97, 212, 155);
+      rect(165, 202, 60, 65);//torso
+      fill(224,172,105);
+      ellipse(160, 250, 13, 13);//left stub
+      ellipse(232, 250, 13, 13);//right stub
+      fill(230, 216, 216);
+      ellipse(194, 208, 8, 8);
+      ellipse(194, 220, 8, 8);
+      ellipse(194, 232, 8, 8);
+      ellipse(194, 244, 8, 8);
+      fill(0, 0, 0);
+      ellipse(218, 156, 15, 15);//hair
+      ellipse(168, 154, 15, 15);
+      ellipse(166, 164, 15, 15);
+      ellipse(163, 176, 15, 15);
+      ellipse(164, 185, 15, 15);
+      ellipse(223, 165, 15, 15);
+      ellipse(224, 175, 15, 15);
+      ellipse(224, 186, 15, 15);
+      ellipse(171, 149, 15, 15);
+      ellipse(213, 149, 15, 15);
+      ellipse(206, 144, 15, 15);
+      ellipse(198, 143, 15, 15);
+      ellipse(180, 146, 15, 15);
+      ellipse(204, 145, 15, 15);
+      ellipse(189, 144, 15, 15);
+      };
+      drawPerson();
+      popMatrix();
+
+      //desk
+      fill(120, 99, 72);
+      rect(1, 398, 397, -83);
+
+      //dialogue
+      pushMatrix();
+      translate(23, 322);
+      fill(69, 69, 69);
+      rect(0, 0, 359, 64);
+      popMatrix();
+
+      pushMatrix();
+      translate(29, 326);
+      fill(255, 255, 255);
+      rect(0, 0, 347, 55);
+      popMatrix();
+
+      //dialogue text
+      pushMatrix();
+      var f26 = createFont("Verdana", 20);
+      textFont(f26, 13);
+      translate(35,330);
+      fill(0, 0, 0);
+      text("SELENA ESTEVES:", 0, -4);
+      popMatrix();
+
+      pushMatrix();
+      textSize(14);
+      translate(38,350);
+      fill(0, 0, 0);
+      text("At my old job I wasn not able to fully express ", -5, -11);
+      text("my ideas for projects, but in the end, I still ", -5, 2);
+      text("managed to help make these projects a success.", -5, 15);
+      popMatrix();
+      btn26.draw();
+
+      //fill space
+      pushMatrix();
+      fill(0, 0, 0);
+      rect(0, 398, 399, 155);
+      popMatrix();
+  };
+
+  var drawScene77 = function() {
+      currentScene = 7.7;
+      //first certificate
+      var x = 16;
+      var y = 23;
+
+      fill(218, 235, 232);
+      rect(0, 0 ,398 ,398);
+
+      noStroke();
+      fill(0, 0, 0);
+      rect(x, y, 108, 73);
+
+      fill(247, 239, 239);
+      rect(x+11, y+10, 87, 54);
+
+      pushMatrix();
+      translate(43, 44);
+      var f11 = createFont("cursive", 20);
+      textFont(f11, 6);
+      fill(0, 0, 0);
+      rotate(0);
+      text("Certificate of Honor", 0, 0);
+      popMatrix();
+
+      pushMatrix();
+      translate(41, 53);
+      var f11 = createFont("cursive", 20);
+      textFont(f11, 8);
+      fill(0, 0, 0);
+      rotate(0);
+      text("Martin Spalding", 0, 0);
+      popMatrix();
+
+      pushMatrix();
+      translate(37, 63);
+      var f11 = createFont("cursive", 20);
+      textFont(f11, 4);
+      fill(0, 0, 0);
+      rotate(0);
+      text("this was written to honor martin for", 0, 0);
+      text("something not sure for what but it wa", 0, 4);
+      text("was for something and yeah", 0, 8);
+      popMatrix();
+
+      //second certificate
+      noStroke();
+      fill(0, 0, 0);
+      rect(272, 23, 108, 73);
+
+      fill(247, 239, 239);
+      rect(283, 33, 87, 54);
+
+      //certificate seal
+      pushMatrix();
+      translate(318, 48);
+      fill(235, 228, 87);
+      ellipse(10, 10, 10, 10);
+      popMatrix();
+
+      pushMatrix();
+      translate(83, 68);
+      fill(235, 228, 87);
+      ellipse(10, 10, 10, 10);
+      popMatrix();
+
+      //bookshelf
+      noStroke();
+      fill(0, 0, 0);
+      rect(158, 73, 82, 73);
+
+      fill(201, 123, 201);
+      rect(163, 83, 72, 54);
+
+      //books on bookshelf
+      pushMatrix();
+      stroke(0, 0, 0);
+      fill(173, 173, 173);
+      beginShape(QUAD_STRIP);
+      translate(33, -137);
+      vertex(130, 220);
+      vertex(130, 275);
+      vertex(150, 220);
+      vertex(150, 275);
+      vertex(165, 220);
+      vertex(165, 275);
+      vertex(182, 220);
+      vertex(182, 275);
+      vertex(202, 220);
+      vertex(202, 275);
+      endShape();
+      popMatrix();
+
+      pushMatrix();
+      translate(287, -70);
+      var f11 = createFont("cursive", 20);
+      textFont(f11, 9);
+      fill(0, 0, 0);
+      rotate(0);
+      text("District of Wizonia", 3, 113);
+      popMatrix();
+
+      pushMatrix();
+      translate(278, -56);
+      var f11 = createFont("cursive", 20);
+      textFont(f11, 4);
+      fill(0, 0, 0);
+      rotate(0);
+      text("Cwords and words and more wordsand word", 13, 124);
+      text("Cwords but in a different format so that it", 13, 129);
+      popMatrix();
+
+      pushMatrix();
+      var f3 = createFont("times", 20);
+      textFont(f3, 6);
+      translate(177,83);
+      fill(0, 0, 0);
+      rotate(190.1);
+      text("HOW TO SUCCEED", 0, 0);
+      text("THE GIVER", 12, -18);
+      text("THE INTERNET", 4, -33);
+      text("WILL ROBOTS", 7, -55);
+      text("TAKE OUR JOBS?", 4, -48);
+      popMatrix();
+
+      //chair
+      pushMatrix();
+      translate(57,56);
+      fill(48, 48, 48);
+      beginShape();
+      curveVertex(-165,  72);
+      curveVertex(165,  267);
+      curveVertex(203,  132);
+      curveVertex(76,  127);
+      curveVertex(76, 259);
+      curveVertex(242, 206);
+      endShape();
+      popMatrix();
+
+      //character
+      pushMatrix();
+      noStroke();
+      scale(1.5);
+      var currentScene;
+      var x = 130;
+      var y = 139;
+      var w = 50;
+      var h = 50;
+
+      fill(255, 224, 189);
+      ellipse(x, y, w, h);//head
+      fill(186, 160, 232);
+      rect(x-25, y+25, w, h+28);//torso
+      fill(161, 150, 161);
+      rect(x+10, y+103, w-35, h-10);//right leg
+      rect(x-25, y+103, w-35, h-10);//left leg
+      fill(255, 224, 189);
+      ellipse(x-30, y+87, w-40, h-40);//left stub
+      ellipse(x+32, y+87, w-40, h-40);//right stub
+      fill(255, 255, 255);
+      ellipse(x-10, y-4, w-40, h-40);//left eyeball
+      ellipse(x+10, y-4, w-40, h-40);//right eyeball
+      fill(0, 0, 0);
+      ellipse(x-10, y-4, w-47, w-47);//left pupil
+      ellipse(x+10, y-4, w-47, h-47);//right pupil
+      fill(199, 14, 42);
+      arc(x+1, y+10, w-29, h-40, 10, 165);//mouth
+      fill(0, 0, 0);
+      ellipse(x-17, y+149, w-35, h-40);//left foot stub
+      ellipse(x+18, y+149, w-35, h-40);//right foot stub
+      fill(186, 160, 232);
+      rect(x-36, y+25, w-40, h+7);//left arm
+      rect(x+26, y+25, w-40, h+7);//right arm
+      fill(255, 0, 0);
+      triangle(x+2, y+48, x+15, y+26, x-16, y+26);//tie
+      fill(0, 0, 0);
+      ellipse(x-6, y-24, w-40, h-40);//hair
+      ellipse(x-14, y-21, w-40, h-40);
+      ellipse(x+2, y-24, w-40, h-40);
+      ellipse(x+11, y-23, w-40, h-40);
+      ellipse(x-21, y-15, w-40, h-40);
+      ellipse(x+19, y-18, w-40, h-40);
+
+      popMatrix();
+
+          //desk
+      fill(120, 99, 72);
+      rect(1, 398, 397, -83);
+
+          //desk decorations
+      pushMatrix();
+      fill(255, 255, 255);
+      translate(58,224);
+      rect(93, 98, 77, 69);
+      popMatrix();
+
+      //paper text
+      pushMatrix();
+      translate(286,467);
+      rotate(180);
+      textSize(8);
+      fill(0, 0, 0);
+      text("resume", 81, 90);
+      popMatrix();
+
+      //dialogue
+      pushMatrix();
+      translate(23, 322);
+      fill(69, 69, 69);
+      rect(0, 0, 359, 64);
+      popMatrix();
+
+      pushMatrix();
+      translate(29, 326);
+      fill(255, 255, 255);
+      rect(0, 0, 347, 55);
+      popMatrix();
+
+          //dialogue text
+      pushMatrix();
+      var f26 = createFont("Verdana", 20);
+      textFont(f26, 13);
+      translate(35,330);
+      fill(0, 0, 0);
+      text("MARTIN SPALDING:", 0, 0);
+      popMatrix();
+
+      pushMatrix();
+      textSize(14);
+      translate(38,345);
+      fill(0, 0, 0);
+      text("I have always loved how hard working your ", 0, 0);
+      text("people are. Such a great work ethic.", 0, 13);
+      popMatrix();
+      btn27.draw();
+
+      //fill space
+      pushMatrix();
+      fill(0, 0, 0);
+      rect(0, 398, 399, 155);
+      popMatrix();
+  };
+
+  //DECISION 4 buttons 10-12
+  var drawScene78 = function() {
+      currentScene = 7.8;
+      //button setup
+
+      //buttons for options
+      var drawButton = function(btn) {
+      fill(243, 247, 247);
+      rect(btn.x, btn.y, btn.width, btn.height, 5);
+      fill(0, 0, 0);
+      textSize(19);
+      textAlign(LEFT, TOP);
+      text(" ", btn.x+10, btn.y+btn.height/4);
+      };
+
+      //wall
+      fill(218, 235, 232);
+      rect(0,0,398,398);
+
+      //door
+      pushMatrix();
+      translate(132,67);
+      fill(166, 131, 48);
+      rect(0, 0, 126, 184);
+      popMatrix();
+
+      //door
+      pushMatrix();
+      translate(132,67);
+      fill(120, 99, 72);
+      rect(0, 0, 126, 184);
+      popMatrix();
+
+      //door decoration
+      pushMatrix();
+      translate(150,79);
+      noFill();
+      rect(0, 0, 92, 71);
+      popMatrix();
+
+      pushMatrix();
+      translate(150,173);
+      noFill();
+      rect(0, 0, 92, 71);
+      popMatrix();
+
+      pushMatrix();
+      translate(246, 164);
+      noStroke();
+      fill(255, 242, 0);
+      ellipse(0, 0, 10, 10);
+      popMatrix();
+      //floor
+      pushMatrix();
+      translate(0,248);
+      noStroke();
+      fill(235, 235, 235);
+      rect(1, 0, 397, 90);
+      popMatrix();
+
+      //wall decoration (left side strip)
+      pushMatrix();
+      translate(1, 238);
+      noStroke();
+      fill(255, 255, 255);
+      rect(0, 0, 132, 13);
+      popMatrix();
+
+      pushMatrix();
+      rotate(102.1);
+      translate(67, -133);
+      noStroke();
+      fill(255, 255, 255);
+      rect(0, 0, 183, 13);
+      popMatrix();
+
+      //wall decoration (right side strip)
+      pushMatrix();
+      translate(258, 238);
+      noStroke();
+      fill(255, 255, 255);
+      rect(0, 0, 140, 13);
+      popMatrix();
+
+      pushMatrix();
+      rotate(1.57);
+      translate(56, -270);
+      noStroke();
+      fill(255, 255, 255);
+      rect(0, 0, 190, 13);
+      popMatrix();
+
+      pushMatrix();
+      rotate(169.64);
+      translate(120, 57);
+      noStroke();
+      fill(255, 255, 255);
+      rect(0, 0, 140, 13);
+      popMatrix();
+
+      //chair
+      pushMatrix();
+      translate(55,60);
+      fill(48, 48, 48);
+      rotate(-0.0);
+      beginShape();
+      curveVertex(-165,  72);
+      curveVertex(165,  267);
+      curveVertex(203,  132);
+      curveVertex(76,  127);
+      curveVertex(76, 259);
+      curveVertex(242, 206);
+      endShape();
+      popMatrix();
+
+      //character
+      pushMatrix();
+      translate(-69,-12);
+      noStroke();
+      scale(1.35);
+      var drawPerson = function() {
+      fill(224,172,105);//head
+      ellipse(193, 172, 60, 60);
+      fill(255, 255, 255);
+      ellipse(201, 165, 13, 13);//left eyeball
+      ellipse(184, 165, 13, 13);//right eyeball
+      fill(0, 0, 0);
+      ellipse(201, 165, 6, 6);//left pupil
+      ellipse(184, 165, 6, 6);//right pupil
+      fill(199, 14, 42);
+      arc(193, 182, 21, 10, 10, 165);//mouth
+      fill(97, 212, 155);
+      rect(154, 202, 11, 46);//left arm
+      rect(218, 202, 21, 46);//right arm
+      fill(97, 212, 155);
+      rect(165, 202, 60, 65);//torso
+      fill(224,172,105);
+      ellipse(160, 250, 13, 13);//left stub
+      ellipse(232, 250, 13, 13);//right stub
+      fill(230, 216, 216);
+      ellipse(194, 208, 8, 8);
+      ellipse(194, 220, 8, 8);
+      ellipse(194, 232, 8, 8);
+      ellipse(194, 244, 8, 8);
+      fill(0, 0, 0);
+      ellipse(218, 156, 15, 15);//hair
+      ellipse(168, 154, 15, 15);
+      ellipse(166, 164, 15, 15);
+      ellipse(163, 176, 15, 15);
+      ellipse(164, 185, 15, 15);
+      ellipse(223, 165, 15, 15);
+      ellipse(224, 175, 15, 15);
+      ellipse(224, 186, 15, 15);
+      ellipse(171, 149, 15, 15);
+      ellipse(213, 149, 15, 15);
+      ellipse(206, 144, 15, 15);
+      ellipse(198, 143, 15, 15);
+      ellipse(180, 146, 15, 15);
+      ellipse(204, 145, 15, 15);
+      ellipse(189, 144, 15, 15);
+      };
+      drawPerson();
+      popMatrix();
+
+      //desk
+      fill(120, 99, 72);
+      rect(1, 398, 397, -83);
+
+      //dialogue
+      pushMatrix();
+      translate(23, 322);
+      fill(69, 69, 69);
+      rect(0, 0, 359, 64);
+      popMatrix();
+
+      pushMatrix();
+      translate(29, 326);
+      fill(255, 255, 255);
+      rect(0, 0, 347, 55);
+      popMatrix();
+
+      //dialogue text
+      pushMatrix();
+      var f26 = createFont("Verdana", 20);
+      textFont(f26, 13);
+      translate(35,330);
+      fill(0, 0, 0);
+      text("SELENA ESTEVES:", 0, 0);
+      popMatrix();
+
+      pushMatrix();
+      textSize(14);
+      translate(38,361);
+      fill(0, 0, 0);
+      text("", 0, 0);
+      popMatrix();
+
+      //option box
+      pushMatrix();
+      translate(88, 75);
+      fill(69, 69, 69);
+      rect(0, 0, 209, 224);
+      popMatrix();
+
+      pushMatrix();
+      translate(91, 79);
+      fill(220, 223, 224);
+      rect(0, 0, 203, 217);
+      popMatrix();
+
+      //shows the buttons
+      pushMatrix();
+      drawButton(btn10);
+      drawButton(btn11);
+      drawButton(btn12);
+      popMatrix();
+
+      //text for options
+      pushMatrix();
+      var f26 = createFont("Verdana", 20);
+      textFont(f26, 15);
+      translate(158,112);
+      fill(0, 0, 0);
+      text("*give a", 0, -9);
+      text("pondering look*", -24, 4);
+      popMatrix();
+
+      pushMatrix();
+      var f26 = createFont("Verdana", 20);
+      textFont(f26, 15);
+      translate(126,170);
+      fill(0, 0, 0);
+      text("Who do you think", 0, 0);
+      text("you are?", 33, 14);
+      popMatrix();
+
+      pushMatrix();
+      var f26 = createFont("Verdana", 20);
+      textFont(f26, 15);
+      translate(119,239);
+      fill(0, 0, 0);
+      text("Yeah..my people", 6, 0);
+      text("sure are something", 0, 13);
+      popMatrix();
+
+      //fill space
+      pushMatrix();
+      fill(0, 0, 0);
+      rect(0, 398, 399, 155);
+      popMatrix();
+  };
+
+  var drawScene79 = function() {
+      currentScene = 7.9;
+      //first certificate
+      var x = 16;
+      var y = 23;
+
+      fill(218, 235, 232);
+      rect(0, 0 ,398 ,398);
+
+      noStroke();
+      fill(0, 0, 0);
+      rect(x, y, 108, 73);
+
+      fill(247, 239, 239);
+      rect(x+11, y+10, 87, 54);
+
+      pushMatrix();
+      translate(43, 44);
+      var f11 = createFont("cursive", 20);
+      textFont(f11, 6);
+      fill(0, 0, 0);
+      rotate(0);
+      text("Certificate of Honor", 0, 0);
+      popMatrix();
+
+      pushMatrix();
+      translate(41, 53);
+      var f11 = createFont("cursive", 20);
+      textFont(f11, 8);
+      fill(0, 0, 0);
+      rotate(0);
+      text("Martin Spalding", 0, 0);
+      popMatrix();
+
+      pushMatrix();
+      translate(37, 63);
+      var f11 = createFont("cursive", 20);
+      textFont(f11, 4);
+      fill(0, 0, 0);
+      rotate(0);
+      text("this was written to honor martin for", 0, 0);
+      text("something not sure for what but it wa", 0, 4);
+      text("was for something and yeah", 0, 8);
+      popMatrix();
+
+      //second certificate
+      noStroke();
+      fill(0, 0, 0);
+      rect(272, 23, 108, 73);
+
+      fill(247, 239, 239);
+      rect(283, 33, 87, 54);
+
+      //certificate seal
+      pushMatrix();
+      translate(318, 48);
+      fill(235, 228, 87);
+      ellipse(10, 10, 10, 10);
+      popMatrix();
+
+      pushMatrix();
+      translate(83, 68);
+      fill(235, 228, 87);
+      ellipse(10, 10, 10, 10);
+      popMatrix();
+
+      //bookshelf
+      noStroke();
+      fill(0, 0, 0);
+      rect(158, 73, 82, 73);
+
+      fill(201, 123, 201);
+      rect(163, 83, 72, 54);
+
+      //books on bookshelf
+      pushMatrix();
+      stroke(0, 0, 0);
+      fill(173, 173, 173);
+      beginShape(QUAD_STRIP);
+      translate(33, -137);
+      vertex(130, 220);
+      vertex(130, 275);
+      vertex(150, 220);
+      vertex(150, 275);
+      vertex(165, 220);
+      vertex(165, 275);
+      vertex(182, 220);
+      vertex(182, 275);
+      vertex(202, 220);
+      vertex(202, 275);
+      endShape();
+      popMatrix();
+
+      pushMatrix();
+      translate(287, -70);
+      var f11 = createFont("cursive", 20);
+      textFont(f11, 9);
+      fill(0, 0, 0);
+      rotate(0);
+      text("District of Wizonia", 3, 113);
+      popMatrix();
+
+      pushMatrix();
+      translate(278, -56);
+      var f11 = createFont("cursive", 20);
+      textFont(f11, 4);
+      fill(0, 0, 0);
+      rotate(0);
+      text("Cwords and words and more wordsand word", 13, 124);
+      text("Cwords but in a different format so that it", 13, 129);
+      popMatrix();
+
+      pushMatrix();
+      var f3 = createFont("times", 20);
+      textFont(f3, 6);
+      translate(177,83);
+      fill(0, 0, 0);
+      rotate(190.1);
+      text("HOW TO SUCCEED", 0, 0);
+      text("THE GIVER", 12, -18);
+      text("THE INTERNET", 4, -33);
+      text("WILL ROBOTS", 7, -55);
+      text("TAKE OUR JOBS?", 4, -48);
+      popMatrix();
+
+      //chair
+      pushMatrix();
+      translate(57,56);
+      fill(48, 48, 48);
+      beginShape();
+      curveVertex(-165, 72);
+      curveVertex(165, 267);
+      curveVertex(203, 132);
+      curveVertex(76, 127);
+      curveVertex(76, 259);
+      curveVertex(242, 206);
+      endShape();
+      popMatrix();
+
+      //character
+      pushMatrix();
+      noStroke();
+      scale(1.5);
+      var currentScene;
+      var x = 130;
+      var y = 139;
+      var w = 50;
+      var h = 50;
+
+      fill(255, 224, 189);
+      ellipse(x, y, w, h);//head
+      fill(186, 160, 232);
+      rect(x-25, y+25, w, h+28);//torso
+      fill(161, 150, 161);
+      rect(x+10, y+103, w-35, h-10);//right leg
+      rect(x-25, y+103, w-35, h-10);//left leg
+      fill(255, 224, 189);
+      ellipse(x-30, y+87, w-40, h-40);//left stub
+      ellipse(x+32, y+87, w-40, h-40);//right stub
+      fill(255, 255, 255);
+      ellipse(x-10, y-4, w-40, h-40);//left eyeball
+      ellipse(x+10, y-4, w-40, h-40);//right eyeball
+      fill(0, 0, 0);
+      ellipse(x-10, y-4, w-47, w-47);//left pupil
+      ellipse(x+10, y-4, w-47, h-47);//right pupil
+      fill(199, 14, 42);
+      arc(x+1, y+10, w-29, h-40, 10, 165);//mouth
+      fill(0, 0, 0);
+      ellipse(x-17, y+149, w-35, h-40);//left foot stub
+      ellipse(x+18, y+149, w-35, h-40);//right foot stub
+      fill(186, 160, 232);
+      rect(x-36, y+25, w-40, h+7);//left arm
+      rect(x+26, y+25, w-40, h+7);//right arm
+      fill(255, 0, 0);
+      triangle(x+2, y+48, x+15, y+26, x-16, y+26);//tie
+      fill(0, 0, 0);
+      ellipse(x-6, y-24, w-40, h-40);//hair
+      ellipse(x-14, y-21, w-40, h-40);
+      ellipse(x+2, y-24, w-40, h-40);
+      ellipse(x+11, y-23, w-40, h-40);
+      ellipse(x-21, y-15, w-40, h-40);
+      ellipse(x+19, y-18, w-40, h-40);
+
+      popMatrix();
+
+          //desk
+      fill(120, 99, 72);
+      rect(1, 398, 397, -83);
+
+          //desk decorations
+      pushMatrix();
+      fill(255, 255, 255);
+      translate(58,224);
+      rect(93, 98, 77, 69);
+      popMatrix();
+
+      //paper text
+      pushMatrix();
+      translate(286,467);
+      rotate(180);
+      textSize(8);
+      fill(0, 0, 0);
+      text("resume", 81, 90);
+      popMatrix();
+
+      //dialogue
+      pushMatrix();
+      translate(23, 322);
+      fill(69, 69, 69);
+      rect(0, 0, 359, 64);
+      popMatrix();
+
+      pushMatrix();
+      translate(29, 326);
+      fill(255, 255, 255);
+      rect(0, 0, 347, 55);
+      popMatrix();
+
+          //dialogue text
+      pushMatrix();
+      var f26 = createFont("Verdana", 20);
+      textFont(f26, 13);
+      translate(35,330);
+      fill(0, 0, 0);
+      text("MARTIN SPALDING:", 0, 0);
+      popMatrix();
+
+      pushMatrix();
+      textSize(14);
+      translate(38,348);
+      fill(0, 0, 0);
+      text("That is good to hear, very nice.", 0, 0);
+      popMatrix();
+      btn28.draw();
+
+      //fill space
+      pushMatrix();
+      fill(0, 0, 0);
+      rect(0, 398, 399, 155);
+      popMatrix();
+  };
+
+  var drawScene80 = function() {
+      currentScene = 80;
+      //first certificate
+      var x = 16;
+      var y = 23;
+
+      fill(218, 235, 232);
+      rect(0, 0 ,398 ,398);
+
+      noStroke();
+      fill(0, 0, 0);
+      rect(x, y, 108, 73);
+
+      fill(247, 239, 239);
+      rect(x+11, y+10, 87, 54);
+
+      pushMatrix();
+      translate(43, 44);
+      var f11 = createFont("cursive", 20);
+      textFont(f11, 6);
+      fill(0, 0, 0);
+      rotate(0);
+      text("Certificate of Honor", 0, 0);
+      popMatrix();
+
+      pushMatrix();
+      translate(41, 53);
+      var f11 = createFont("cursive", 20);
+      textFont(f11, 8);
+      fill(0, 0, 0);
+      rotate(0);
+      text("Martin Spalding", 0, 0);
+      popMatrix();
+
+      pushMatrix();
+      translate(37, 63);
+      var f11 = createFont("cursive", 20);
+      textFont(f11, 4);
+      fill(0, 0, 0);
+      rotate(0);
+      text("this was written to honor martin for", 0, 0);
+      text("something not sure for what but it wa", 0, 4);
+      text("was for something and yeah", 0, 8);
+      popMatrix();
+
+      //second certificate
+      noStroke();
+      fill(0, 0, 0);
+      rect(272, 23, 108, 73);
+
+      fill(247, 239, 239);
+      rect(283, 33, 87, 54);
+
+      //certificate seal
+      pushMatrix();
+      translate(318, 48);
+      fill(235, 228, 87);
+      ellipse(10, 10, 10, 10);
+      popMatrix();
+
+      pushMatrix();
+      translate(83, 68);
+      fill(235, 228, 87);
+      ellipse(10, 10, 10, 10);
+      popMatrix();
+
+      //bookshelf
+      noStroke();
+      fill(0, 0, 0);
+      rect(158, 73, 82, 73);
+
+      fill(201, 123, 201);
+      rect(163, 83, 72, 54);
+
+      //books on bookshelf
+      pushMatrix();
+      stroke(0, 0, 0);
+      fill(173, 173, 173);
+      beginShape(QUAD_STRIP);
+      translate(33, -137);
+      vertex(130, 220);
+      vertex(130, 275);
+      vertex(150, 220);
+      vertex(150, 275);
+      vertex(165, 220);
+      vertex(165, 275);
+      vertex(182, 220);
+      vertex(182, 275);
+      vertex(202, 220);
+      vertex(202, 275);
+      endShape();
+      popMatrix();
+
+      pushMatrix();
+      translate(287, -70);
+      var f11 = createFont("cursive", 20);
+      textFont(f11, 9);
+      fill(0, 0, 0);
+      rotate(0);
+      text("District of Wizonia", 3, 113);
+      popMatrix();
+
+      pushMatrix();
+      translate(278, -56);
+      var f11 = createFont("cursive", 20);
+      textFont(f11, 4);
+      fill(0, 0, 0);
+      rotate(0);
+      text("Cwords and words and more wordsand word", 13, 124);
+      text("Cwords but in a different format so that it", 13, 129);
+      popMatrix();
+
+      pushMatrix();
+      var f3 = createFont("times", 20);
+      textFont(f3, 6);
+      translate(177,83);
+      fill(0, 0, 0);
+      rotate(190.1);
+      text("HOW TO SUCCEED", 0, 0);
+      text("THE GIVER", 12, -18);
+      text("THE INTERNET", 4, -33);
+      text("WILL ROBOTS", 7, -55);
+      text("TAKE OUR JOBS?", 4, -48);
+      popMatrix();
+
+      //chair
+      pushMatrix();
+      translate(57,56);
+      fill(48, 48, 48);
+      beginShape();
+      curveVertex(-165,  72);
+      curveVertex(165,  267);
+      curveVertex(203,  132);
+      curveVertex(76,  127);
+      curveVertex(76, 259);
+      curveVertex(242, 206);
+      endShape();
+      popMatrix();
+
+      //character
+      pushMatrix();
+      noStroke();
+      scale(1.5);
+      var currentScene;
+      var x = 130;
+      var y = 139;
+      var w = 50;
+      var h = 50;
+
+      fill(255, 224, 189);
+      ellipse(x, y, w, h);//head
+      fill(186, 160, 232);
+      rect(x-25, y+25, w, h+28);//torso
+      fill(161, 150, 161);
+      rect(x+10, y+103, w-35, h-10);//right leg
+      rect(x-25, y+103, w-35, h-10);//left leg
+      fill(255, 224, 189);
+      ellipse(x-30, y+87, w-40, h-40);//left stub
+      ellipse(x+32, y+87, w-40, h-40);//right stub
+      fill(255, 255, 255);
+      ellipse(x-10, y-4, w-40, h-40);//left eyeball
+      ellipse(x+10, y-4, w-40, h-40);//right eyeball
+      fill(0, 0, 0);
+      ellipse(x-10, y-4, w-47, w-47);//left pupil
+      ellipse(x+10, y-4, w-47, h-47);//right pupil
+      fill(199, 14, 42);
+      arc(x+1, y+10, w-29, h-40, 10, 165);//mouth
+      fill(0, 0, 0);
+      ellipse(x-17, y+149, w-35, h-40);//left foot stub
+      ellipse(x+18, y+149, w-35, h-40);//right foot stub
+      fill(186, 160, 232);
+      rect(x-36, y+25, w-40, h+7);//left arm
+      rect(x+26, y+25, w-40, h+7);//right arm
+      fill(255, 0, 0);
+      triangle(x+2, y+48, x+15, y+26, x-16, y+26);//tie
+      fill(0, 0, 0);
+      ellipse(x-6, y-24, w-40, h-40);//hair
+      ellipse(x-14, y-21, w-40, h-40);
+      ellipse(x+2, y-24, w-40, h-40);
+      ellipse(x+11, y-23, w-40, h-40);
+      ellipse(x-21, y-15, w-40, h-40);
+      ellipse(x+19, y-18, w-40, h-40);
+
+      popMatrix();
+
+          //desk
+      fill(120, 99, 72);
+      rect(1, 398, 397, -83);
+
+          //desk decorations
+      pushMatrix();
+      fill(255, 255, 255);
+      translate(58,224);
+      rect(93, 98, 77, 69);
+      popMatrix();
+
+      //paper text
+      pushMatrix();
+      translate(286,467);
+      rotate(180);
+      textSize(8);
+      fill(0, 0, 0);
+      text("resume", 81, 90);
+      popMatrix();
+
+      //dialogue
+      pushMatrix();
+      translate(23, 322);
+      fill(69, 69, 69);
+      rect(0, 0, 359, 64);
+      popMatrix();
+
+      pushMatrix();
+      translate(29, 326);
+      fill(255, 255, 255);
+      rect(0, 0, 347, 55);
+      popMatrix();
+
+      //dialogue text
+      pushMatrix();
+      var f26 = createFont("Verdana", 20);
+      textFont(f26, 13);
+      translate(35,330);
+      fill(0, 0, 0);
+      text("MARTIN SPALDING:", 0, 0);
+      popMatrix();
+
+      pushMatrix();
+      textSize(14);
+      translate(38,345);
+      fill(0, 0, 0);
+      text("Thank you for coming. The office will call you", 0, 0);
+      text("in two or so weeks.", 0, 12);
+      popMatrix();
+      btn29.draw();
+
+      //fill space
+      pushMatrix();
+      fill(0, 0, 0);
+      rect(0, 398, 399, 155);
+      popMatrix();
+  };
+
+  var drawScene7 = function() {
+      // Scene 7: Get the job
+      currentScene = 7;
+
+      // Scene 7: Try Again
+      //explanation background
+      fill(227, 227, 227);
+      rect(0, 0, 398, 398);
+
+      //background decoration
+      fill(255, 0, 0);
+      ellipse(41, 30, 20, 20);
+
+      fill(97, 171, 119);
+      rect(23, 14, 59, 29);
+
+      fill(97, 171, 119);
+      rect(168, 14, 59, 29);
+
+      fill(97, 171, 119);
+      rect(315, 14, 59, 29);
+
+      fill(97, 171, 119);
+      rect(23, 353, 59, 29);
+
+      fill(97, 171, 119);
+      rect(168, 353, 59, 29);
+
+      //
+      fill(97, 171, 119);
+      rect(315, 353, 59, 29);
+
+      //explanation
+      fill(245, 245, 245);
+      rect(42, 85, 311, 208);
+
+      textSize(18);
+      fill(0, 0, 0);
+      text("The Interview:", 54, 109);
+
+      textSize(12);
+      fill(0, 0, 0);
+      text("Mr. Spalding did not appreciate how defensive", 58, 127);
+
+      textSize(12);
+      fill(0, 0, 0);
+      text("you were during the interview. Although he allowed", 58, 153);
+
+      textSize(12);
+      fill(0, 0, 0);
+      text("the interview to continue, you  were immediately", 58, 184);
+
+      textSize(12);
+      fill(0, 0, 0);
+      text("crossed off his list of potential employees. If you ", 58, 213);
+
+      textSize(12);
+      fill(0, 0, 0);
+      text("really want the job, you can try again.", 58, 240);
+
+      butn17.draw();
+  }; // Scene 7 function
+
+  var drawScene8 = function() {
+      // Scene 8: End screen
+      background(235, 247, 255);
+      //explanation background
+      fill(176, 3, 176);
+      rect(0, 0, 398, 398);
+
+      //background decoration
+      fill(255, 0, 0);
+      ellipse(41, 30, 20, 20);
+
+      fill(97, 171, 119);
+      rect(23, 14, 59, 29);
+
+      fill(97, 171, 119);
+      rect(168, 14, 59, 29);
+
+      fill(97, 171, 119);
+      rect(315, 14, 59, 29);
+
+      fill(97, 171, 119);
+      rect(23, 353, 59, 29);
+
+      fill(97, 171, 119);
+      rect(168, 353, 59, 29);
+
+      //
+      fill(97, 171, 119);
+      rect(315, 353, 59, 29);
+
+      //explanation
+      fill(245, 245, 245);
+      rect(42, 85, 311, 208);
+
+      textSize(18);
+      fill(0, 0, 0);
+      text("Well, you got the job.", 60, 123);
+
+      textSize(12);
+      fill(0, 0, 0);
+      text("Your responses impressed Mr. Spalding and you ", 58, 148);
+
+      textSize(12);
+      fill(0, 0, 0);
+      text("were invited to start working at [insert company name]", 58, 166);
+
+      textSize(12);
+      fill(0, 0, 0);
+      text("starting next week. Although his comments made ", 58, 185);
+
+      textSize(12);
+      fill(0, 0, 0);
+      text("you a bit uncomfortable, you really need this job,", 58, 201);
+
+      textSize(18);
+      fill(0, 0, 0);
+      text("but is it really worth it?", 58, 231);
+
+      currentScene = 8;
+  }; // Scene 8 function (End screen) // functions for scenes
+
+  mouseClicked = function() {
+    for (var i = 0; i < buttons.length; i++) {
+      if (buttons[i].sceneNumber === currentScene){
+        buttons[i].handleMouseClick();
+      }
+    }
+  };
+
+  draw = function() {
+    for (var i = 0; i < buttons.length; i++)  {
+      if (buttons[i].sceneNumber === currentScene){
+        buttons[i].draw();
+      }
+    }
+  };
+}
+
+void draw(){
+
+}
+
+
+</script>
+<canvas id="mycanvas"></canvas>
+
+  <h2><br/>Contact Us</h2>
+
+  <p>Click to email: <a href="massielrsanchez@gmail.com">Massiel</a>, <a href="mailto:jwalch023@gmail.com">Joanna</a>, <a href="mailto:mdj891@gmail.com">Melissa</a>, <a href="maltamirano3799@gmail.com">Maria</a></p>
+</body>
+</html>
